@@ -3,9 +3,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
+    //Singleton
 
-    public boolean up, down, left, right,run, attack, enter, esc;
+    public static KeyHandler keyHandler;
+    private boolean up, down, left, right,run, attack, enter, esc;
 
+    private KeyHandler() {
+    }
+
+    public static KeyHandler getInstance(){
+        if(keyHandler==null){
+            keyHandler = new KeyHandler();
+        }
+        return keyHandler;
+    }
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -69,4 +80,29 @@ public class KeyHandler implements KeyListener {
         }
 
     }
+    public boolean isUp() {
+        return up;
+    }
+    public boolean isDown() {
+        return down;
+    }
+    public boolean isLeft() {
+        return left;
+    }
+    public boolean isRight() {
+        return right;
+    }
+    public boolean isRun() {
+        return run;
+    }
+    public boolean isAttack() {
+        return attack;
+    }
+    public boolean isEnter() {
+        return enter;
+    }
+    public boolean isEsc() {
+        return esc;
+    }
+
 }

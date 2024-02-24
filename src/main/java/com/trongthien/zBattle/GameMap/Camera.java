@@ -12,6 +12,12 @@ public class Camera {
         this.world = world;
         update();
     }
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
     public void update() {
         x=hero.x+ GameConstant.tileSize/2-GameConstant.screenWidth/2;
         y=hero.y+GameConstant.tileSize/2-GameConstant.screenHeight/2;
