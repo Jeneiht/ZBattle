@@ -1,5 +1,5 @@
 package com.trongthien.zBattle.character;
 
-public enum State {
+public enum PlayerState {
     IDLE, WALK, RUN, ATTACKA, ATTACKB, ATTACKC, IDLEDRAWN, WALKDRAWN, HURTDRAWN, SHEATH
 }

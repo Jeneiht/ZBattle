@@ -1,25 +1,56 @@
 package com.trongthien.zBattle.component;
 
 
-public class AnimationUtils {
-    public int counter;
-    public int frame;
-    public int animationSpeed;
+import lombok.Getter;
 
-    public AnimationUtils(int animationSpeed) {
-        counter=0;
-        frame=0;
-        this.animationSpeed = animationSpeed;
+public class AnimationUtils {
+    //Singleton
+    public static AnimationUtils animationUtils;
+    public int counter;
+    @Getter
+    public int frame;
+    public int maxFrame;
+    public int animationSpeed;
+    public boolean blocked = false;
+
+    private AnimationUtils() {
     }
-    public void update(int maxFrame) {
+
+    public static AnimationUtils getInstance() {
+        if (animationUtils == null) {
+            animationUtils = new AnimationUtils();
+        }
+        return animationUtils;
+    }
+
+    public void startAnimation(int animationSpeed, int maxFrame, boolean blocked) {
+        if (this.blocked && !endAnimation()) {
+            update();
+            return;
+        }
+        frame = 0;
+        this.animationSpeed = animationSpeed;
+        this.maxFrame = maxFrame;
+        this.blocked = blocked;
+        counter = 0;
+    }
+
+    public void update() {
         counter++;
-        if (counter > animationSpeed) {
+        if (counter >= animationSpeed) {
             counter = 0;
             frame++;
-            frame%=maxFrame;
+            if (frame >= maxFrame) {
+                frame = 0;
+            }
         }
     }
-    public int getFrame() {
-        return frame;
+
+    public boolean endAnimation() {
+        return frame == maxFrame - 1;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
     }
 }
