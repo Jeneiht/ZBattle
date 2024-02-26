@@ -10,4 +10,7 @@ public class GameConstant {
 
     public static final int screenWidth = tileSize * maxScreenCol;
     public static final int screenHeight = tileSize * maxScreenRow;
+    public static final int FPS = 60;
+    public static final int animationSpeed = 4;
+
 }

@@ -1,20 +1,21 @@
 package com.trongthien.zBattle.GameMap;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 public class Tile {
-    BufferedImage image;
-    public Tile(int num) {
-        int x=num/40 +1;
-        int y=num%40 +1;
-        try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResource("src/main/resources/map/world_tiles.png"))).getSubimage(x*32, y*32, 32, 32);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public BufferedImage image;
+    boolean solid=false;
+    public Tile(TileSet tileSet, int x, int y,int tileWidth, int tileHeight) {
+        image =tileSet.getImage().getSubimage(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
+    }
+    public BufferedImage getImage() {
+        return image;
+    }
+    public void setSolid(){
+        solid=true;
+    }
+    public boolean isSolid() {
+        return solid;
     }
 
 }

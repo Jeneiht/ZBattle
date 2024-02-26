@@ -1,73 +1,80 @@
 package com.trongthien.zBattle.GameMap;
 
+import com.trongthien.zBattle.component.ResourceLoader;
 import com.trongthien.zBattle.constant.GameConstant;
-import com.trongthien.zBattle.screen.MainPanel;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.Set;
 
 
-public class World {
+public class World implements Map {
     public final int maxWorldCol = 60;
     public final int maxWorldRow = 60;
-    MainPanel mainPanel;
-    public final int worldWidth = maxWorldCol * GameConstant.tileSize;
-    public final int worldHeight = maxWorldRow * GameConstant.tileSize;
-    public int[][] tiles;
-    public BufferedImage worldTiles;
+
+    public int spawnX = 50;
+    public int spawnY = 50;
+    public final int worldTileSize = 32;
+    public final int worldWidth = maxWorldCol * worldTileSize;
+    public final int worldHeight = maxWorldRow * worldTileSize;
+    public final int worldTileSetMaxCol = 40;
+    public final int worldTileSetMaxRow = 40;
+    public Tile[][] tiles;
+    public String worldTileSetPath = "/map/world_tiles.png";
+    public String worldPath = "/map/world.txt";
+    public String worldSolidTileSetPath = "/map/solid_tiles.txt";
+
+    public TileSet worldTileSet=new TileSet(worldTileSetPath);
     Set<Integer> solidTiles = new java.util.HashSet<>();
 
-    public World(MainPanel mainPanel) throws IOException {
-        this.mainPanel = mainPanel;
-        tiles = new int[maxWorldRow][maxWorldCol];
-        worldTiles = ImageIO.read(new File("src/main/resources/map/world_tiles.png"));
-
+    public World() {
+        tiles = new Tile[maxWorldRow][maxWorldCol];
         loadSolidTiles();
     }
 
-    public void loadWorld() throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("src/main/resources/map/world.txt"));
+    @Override
+    public void loadMap() {
+        Scanner scanner;
+        scanner = new Scanner(ResourceLoader.getInstance().loadInputStream(worldPath));
         for (int row = 0; row < maxWorldRow; row++) {
             String line = scanner.nextLine();
             for (int col = 0; col < maxWorldCol; col++) {
-                tiles[row][col] = Integer.parseInt(line.split(",")[col]);
+                tiles[row][col] = getTile(Integer.parseInt(line.split(",")[col]));
+                if (solidTiles.contains(Integer.parseInt(line.split(",")[col]))) {
+                    tiles[row][col].setSolid();
+                }
             }
         }
     }
 
-    private void loadSolidTiles() throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("src/main/resources/map/solid_tiles.txt"));
+    private void loadSolidTiles() {
+        Scanner scanner;
+        scanner = new Scanner(ResourceLoader.getInstance().loadInputStream(worldSolidTileSetPath));
         String line = scanner.nextLine();
         for (String num : line.split(",")) {
             solidTiles.add(Integer.parseInt(num));
         }
     }
 
+    @Override
     public boolean isSolid(int x, int y) {
-        int row = y / GameConstant.tileSize;
-        int col = x / GameConstant.tileSize;
-        return solidTiles.contains(tiles[row][col]);
+        int row = y / worldTileSize;
+        int col = x / worldTileSize;
+        return tiles[row][col].isSolid();
     }
 
-    private BufferedImage getTile(int num) {
-        int x = num % 40;
-        int y = num / 40;
-        return worldTiles.getSubimage(x * GameConstant.tileSize, y * GameConstant.tileSize, GameConstant.tileSize, GameConstant.tileSize);
+    private Tile getTile(int num) {
+        int x = num % worldTileSetMaxCol;
+        int y = num / worldTileSetMaxRow;
+        return new Tile(worldTileSet, x, y, worldTileSize, worldTileSize);
     }
-
-    public void draw(Graphics2D g2d, int cameraX, int cameraY) throws IOException {
-        int startRow = cameraY / GameConstant.tileSize;
-        int startCol = cameraX / GameConstant.tileSize;
+    @Override
+    public void draw(Graphics2D g2d, Camera camera) {
+        int startRow = camera.getY() / worldTileSize;
+        int startCol = camera.getX() / worldTileSize;
         for (int i = startRow; i <= startRow + GameConstant.maxScreenRow && i < maxWorldRow; i++) {
             for (int j = startCol; j <= startCol + GameConstant.maxScreenCol && j < maxWorldCol; j++) {
-                g2d.drawImage(getTile(tiles[i][j]), j * GameConstant.tileSize - cameraX, i * GameConstant.tileSize - cameraY, null);
-
+                g2d.drawImage(tiles[i][j].getImage(), j * worldTileSize - camera.getX(), i * worldTileSize - camera.getY(), null);
             }
         }
     }
