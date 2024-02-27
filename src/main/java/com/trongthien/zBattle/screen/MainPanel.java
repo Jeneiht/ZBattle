@@ -52,6 +52,7 @@ public class MainPanel extends JPanel implements Runnable {
 
     private void update() {
         currentPlayer.update();
+        currentGameMap.update();
         camera.update();
     }
 
