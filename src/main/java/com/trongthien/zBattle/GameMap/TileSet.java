@@ -6,14 +6,11 @@ import lombok.Setter;
 
 import java.awt.image.BufferedImage;
 
+@Getter
+@Setter
 public class TileSet {
-    @Getter
     private BufferedImage image;
-    @Getter
-    @Setter
     public int maxCol;
-    @Getter
-    @Setter
     public int maxRow;
     public int tileSize;
     public TileSet(String path,int tileSize) {

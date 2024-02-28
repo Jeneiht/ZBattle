@@ -4,12 +4,12 @@ import com.trongthien.zBattle.constant.GameConstant;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class Camera {
-    public Player player;
-    public GameMap gameMap;
-    @Getter
-    @Setter
-    public int x, y;
+    private Player player;
+    private GameMap gameMap;
+    private int x, y;
     public Camera(Player player, GameMap gameMap) {
         this.player = player;
         this.gameMap = gameMap;

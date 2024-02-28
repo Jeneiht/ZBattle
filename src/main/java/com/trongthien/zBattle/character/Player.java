@@ -1,9 +1,11 @@
 package com.trongthien.zBattle.character;
 
 import com.trongthien.zBattle.GameMap.Camera;
+import com.trongthien.zBattle.GameMap.GameMap;
 import com.trongthien.zBattle.GameMap.Tile;
 import com.trongthien.zBattle.GameMap.TileSet;
-import com.trongthien.zBattle.component.AnimationUtils;
+import com.trongthien.zBattle.component.AnimationCounter;
+import com.trongthien.zBattle.component.CollisionChecker;
 import com.trongthien.zBattle.constant.GameConstant;
 import com.trongthien.zBattle.key.KeyHandler;
 
@@ -13,17 +15,55 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Player extends Entity {
-    public PlayerState playerState;
+public abstract class Player extends Entity {
+    protected int health;
+    protected PlayerState playerState;
     //state: idle, walk, run, attackA, attackB, attackC, idleDrawn, walkDrawn, hurtDrawn, sheath
-    public String playerTileSetPath;
-    public TileSet playerTileSet;
-    public int tileX, tileY;
-    public Map<Map<PlayerState, Direction>, Integer> maxFrame = new HashMap<>();
-    public Map<Map<PlayerState, Direction>, Integer> mapTileY = new HashMap<>();
+    protected String playerTileSetPath;
+    protected int runSpeed;
+    protected int walkSpeed;
+    protected int idleSpeed;
+    protected TileSet playerTileSet;
+    protected int tileX, tileY;
+    protected Map<Map<PlayerState, Direction>, Integer> maxFrame = new HashMap<>();
+    protected Map<Map<PlayerState, Direction>, Integer> mapTileY = new HashMap<>();
+    AnimationCounter animationCounter;
 
-    protected void load() {
-        getSolidArea();
+    protected Player(GameMap gameMap) {
+        this.gameMap = gameMap;
+        collisionChecker = new CollisionChecker(gameMap);
+        this.x = gameMap.getSpawnX();
+        this.y = gameMap.getSpawnY();
+        setHealth();
+        setPlayerTileSetPath();
+        setHeight();
+        setWidth();
+        setBodyHitBox();
+        setIdleSpeed();
+        setWalkSpeed();
+        setRunSpeed();
+        playerTileSet = new TileSet(playerTileSetPath, width);
+        playerState = PlayerState.IDLE;
+        direction = Direction.DOWN;
+        animationCounter = new AnimationCounter(GameConstant.animationSpeed);
+        load();
+    }
+    protected abstract void setBodyHitBox();
+    protected abstract void setHealth();
+
+    protected abstract void setPlayerTileSetPath();
+
+    protected abstract void setRunSpeed();
+
+    protected abstract void setWalkSpeed();
+
+    protected abstract void setIdleSpeed();
+
+    protected abstract void setWidth();
+
+    protected abstract void setHeight();
+
+    private void load() {
         loadFrameInfo();
         findTile();
     }
@@ -33,7 +73,7 @@ public class Player extends Entity {
         PlayerState previousState = playerState;
         Direction previousDirection = direction;
         updateSpeed();
-        if (!AnimationUtils.getInstance().isBlocked() || AnimationUtils.getInstance().endAnimation()) {
+        if (!animationCounter.isBlocked() || animationCounter.endAnimation()) {
             updatePlayerState();
         }
         updateDirection();
@@ -45,10 +85,10 @@ public class Player extends Entity {
         if (playerState == PlayerState.ATTACKA) {
             animationBlocked = true;
         }
-        if (animationChanged) {
-            AnimationUtils.getInstance().startAnimation(GameConstant.animationSpeed, maxFrame.get(Map.of(playerState, direction)), animationBlocked);
+        if (animationChanged || animationCounter.getMaxFrame() == 0) {
+            animationCounter.start(maxFrame.get(Map.of(playerState, Direction.force(direction))), animationBlocked);
         } else {
-            AnimationUtils.getInstance().update();
+            animationCounter.update();
         }
     }
 
@@ -65,70 +105,112 @@ public class Player extends Entity {
         if (KeyHandler.getInstance().isRight()) {
             direction = Direction.RIGHT;
         }
+        if (KeyHandler.getInstance().isUp() && KeyHandler.getInstance().isLeft() && !KeyHandler.getInstance().isRight() && !KeyHandler.getInstance().isDown()) {
+            direction = Direction.UP_LEFT;
+        }
+        if (KeyHandler.getInstance().isUp() && KeyHandler.getInstance().isRight() && !KeyHandler.getInstance().isLeft() && !KeyHandler.getInstance().isDown()) {
+            direction = Direction.UP_RIGHT;
+        }
+        if (KeyHandler.getInstance().isDown() && KeyHandler.getInstance().isLeft() && !KeyHandler.getInstance().isRight() && !KeyHandler.getInstance().isUp()) {
+            direction = Direction.DOWN_LEFT;
+        }
+        if (KeyHandler.getInstance().isDown() && KeyHandler.getInstance().isRight() && !KeyHandler.getInstance().isLeft() && !KeyHandler.getInstance().isUp()) {
+            direction = Direction.DOWN_RIGHT;
+        }
     }
 
     private void move() {
-        if (KeyHandler.getInstance().isUp()) {
-            y -= speed;
-            getSolidArea();
-            while (collisionChecker.checkCollisionTop(this)) {
-                y++;
-                getSolidArea();
-            }
-        }
-        if (KeyHandler.getInstance().isDown()) {
-            y += speed;
-            getSolidArea();
-            while (collisionChecker.checkCollisionBottom(this)) {
-                y--;
-                getSolidArea();
-            }
-        }
-        if (KeyHandler.getInstance().isLeft()) {
-            x -= speed;
-            getSolidArea();
-            while (collisionChecker.checkCollisionLeft(this)) {
-                x++;
-                getSolidArea();
-            }
-        }
-        if (KeyHandler.getInstance().isRight()) {
-            x += speed;
-            getSolidArea();
-            while (collisionChecker.checkCollisionRight(this)) {
-                x--;
-                getSolidArea();
-            }
+        switch (direction) {
+            case UP:
+                y -= speed;
+                while (collisionChecker.checkCollisionTop(this)) {
+                    y++;
+                }
+                break;
+            case DOWN:
+                y += speed;
+                while (collisionChecker.checkCollisionBottom(this)) {
+                    y--;
+                }
+                break;
+            case LEFT:
+                x -= speed;
+                while (collisionChecker.checkCollisionLeft(this)) {
+                    x++;
+                }
+                break;
+            case RIGHT:
+                x += speed;
+                while (collisionChecker.checkCollisionRight(this)) {
+                    x--;
+                }
+                break;
+            case UP_LEFT:
+                y -= speed / 2;
+                while (collisionChecker.checkCollisionTop(this)) {
+                    y++;
+                }
+                x -= speed / 2;
+                while (collisionChecker.checkCollisionLeft(this)) {
+                    x++;
+                }
+                break;
+            case UP_RIGHT:
+                y -= speed / 2;
+                while (collisionChecker.checkCollisionTop(this)) {
+                    y++;
+                }
+                x += speed / 2;
+                while (collisionChecker.checkCollisionRight(this)) {
+                    x--;
+                }
+                break;
+            case DOWN_LEFT:
+                y += speed / 2;
+                while (collisionChecker.checkCollisionBottom(this)) {
+                    y--;
+                }
+                x -= speed / 2;
+                while (collisionChecker.checkCollisionLeft(this)) {
+                    x++;
+                }
+                break;
+            case DOWN_RIGHT:
+                y += speed / 2;
+                while (collisionChecker.checkCollisionBottom(this)) {
+                    y--;
+                }
+                x += speed / 2;
+                while (collisionChecker.checkCollisionRight(this)) {
+                    x--;
+                }
+                break;
         }
     }
 
     private void updateSpeed() {
         if (KeyHandler.getInstance().isUp() || KeyHandler.getInstance().isDown() || KeyHandler.getInstance().isLeft() || KeyHandler.getInstance().isRight()) {
-            if (KeyHandler.getInstance().isRun()) {
-                speed = 3;
+            if (KeyHandler.getInstance().isShift()) {
+                speed = runSpeed;
             } else {
-                speed = 2;
+                speed = walkSpeed;
             }
         } else {
-            speed = 0;
+            speed = idleSpeed;
         }
     }
 
     private void updatePlayerState() {
-        if (speed == 0) {
+        if (speed == idleSpeed) {
             playerState = PlayerState.IDLE;
-        } else if (speed == 2) {
+        } else if (speed == walkSpeed) {
             playerState = PlayerState.WALK;
-        } else if (speed == 3) {
+        } else if (speed == runSpeed) {
             playerState = PlayerState.RUN;
         }
-        if (KeyHandler.getInstance().isAttackA()) {
+        if (KeyHandler.getInstance().isSpace()) {
             playerState = PlayerState.ATTACKA;
         }
-    }
-
-    private void getSolidArea() {
-        solidArea = new Rectangle(x + solidX, y + solidY, solidWidth, solidHeight);
     }
 
     private void loadFrameInfo() {
@@ -150,6 +232,7 @@ public class Player extends Entity {
         mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.UP), 14);
         mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.LEFT), 15);
 
+
         //init maxFrame
         maxFrame.put(Map.of(PlayerState.IDLE, Direction.DOWN), 8);
         maxFrame.put(Map.of(PlayerState.IDLE, Direction.RIGHT), 8);
@@ -170,8 +253,8 @@ public class Player extends Entity {
     }
 
     private void findTile() {
-        tileY = mapTileY.get(Map.of(playerState, direction));
-        tileX = AnimationUtils.getInstance().getFrame();
+        tileY = mapTileY.get(Map.of(playerState, Direction.force(direction)));
+        tileX = animationCounter.getFrame();
     }
 
     public void draw(Graphics2D g2d, Camera camera) {

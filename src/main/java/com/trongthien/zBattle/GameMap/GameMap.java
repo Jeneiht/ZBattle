@@ -1,31 +1,58 @@
 package com.trongthien.zBattle.GameMap;
 
+import com.trongthien.zBattle.character.Enemy;
 import com.trongthien.zBattle.component.ResourceLoader;
 import com.trongthien.zBattle.constant.GameConstant;
 import lombok.Getter;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
-public class GameMap {
-    public int maxCol;
-    public int maxRow;
-    public int tileSize;
-    public int width;
-    public int height;
-    public Tile[][] tiles;
+@Getter
+public abstract class GameMap {
+    protected int maxCol;
+    protected int maxRow;
+    protected int tileSize;
+    protected int width;
+    protected int height;
+    protected Tile[][] tiles;
 
-    public String tileSetPath;
-    public String gameMapPath;
-    public String solidTilesPath;
-    public TileSet tileSet;
-    @Getter
-    public int spawnX;
-    @Getter
-    public int spawnY;
+    protected String tileSetPath;
+    protected String gameMapPath;
+    protected String solidTilesPath;
+    protected TileSet tileSet;
+    protected int spawnX;
+    protected int spawnY;
+    protected ArrayList<Enemy> enemies = new ArrayList<>();
 
+    protected GameMap() {
+        setGameMapPath();
+        setTileSetPath();
+        setSolidTilesPath();
+        setMaxCol();
+        setMaxRow();
+        setTileSize();
+        setSpawnX();
+        setSpawnY();
+        width = maxCol * tileSize;
+        height = maxRow * tileSize;
+        tiles = new Tile[maxRow][maxCol];
+        tileSet = new TileSet(tileSetPath, tileSize);
+        load();
+        loadEnemies();
+    }
+    protected abstract void loadEnemies();
+    protected abstract void setMaxCol();
+    protected abstract void setMaxRow();
+    protected abstract void setTileSize();
+    protected abstract void setGameMapPath();
+    protected abstract void setSolidTilesPath();
+    protected abstract void setTileSetPath();
+    protected abstract void setSpawnX();
+    protected abstract void setSpawnY();
     protected void load() {
         Scanner scanner = new Scanner(ResourceLoader.getInstance().loadInputStream(gameMapPath));
         for (int row = 0; row < maxRow; row++) {
@@ -60,11 +87,20 @@ public class GameMap {
         int y = id / tileSet.getMaxRow();
         return new Tile(tileSet, x, y, tileSize, tileSize);
     }
-
+    public void update() {
+        for (Enemy enemy : enemies) {
+            enemy.update();
+        }
+    }
     public boolean isSolidTile(int x, int y){
         int row = y/tileSize;
         int col = x/tileSize;
         return tiles[row][col].isSolid();
+    }
+    private void drawEnemies(Graphics2D g2d, Camera camera) {
+        for (Enemy enemy : enemies) {
+            enemy.draw(g2d, camera);
+        }
     }
     public void draw(Graphics2D g2d, Camera camera){
         int startRow = camera.getY()/tileSize;
@@ -74,5 +110,6 @@ public class GameMap {
                 g2d.drawImage(tiles[i][j].getImage(), j*tileSize - camera.getX(), i*tileSize - camera.getY(), null);
             }
         }
+        drawEnemies(g2d, camera);
     }
 }

@@ -1,12 +1,14 @@
 package com.trongthien.zBattle.key;
+import lombok.Getter;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+@Getter
 public class KeyHandler implements KeyListener {
     //Singleton
-
     public static KeyHandler keyHandler;
-    private boolean up, down, left, right,run, attackA, enter, esc;
+    private boolean up, down, left, right, shift, space, enter, esc;
 
     private KeyHandler() {
     }
@@ -25,7 +27,7 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
         if(code==KeyEvent.VK_SHIFT){
-            run=true;
+            shift =true;
         }
         if (code == KeyEvent.VK_W) {
             up = true;
@@ -40,7 +42,7 @@ public class KeyHandler implements KeyListener {
             right = true;
         }
         if (code == KeyEvent.VK_SPACE) {
-            attackA = true;
+            space = true;
         }
         if (code == KeyEvent.VK_ENTER) {
             enter = true;
@@ -54,7 +56,7 @@ public class KeyHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
         if(code==KeyEvent.VK_SHIFT){
-            run=false;
+            shift =false;
         }
         if (code == KeyEvent.VK_W) {
             up = false;
@@ -69,7 +71,7 @@ public class KeyHandler implements KeyListener {
             right = false;
         }
         if (code == KeyEvent.VK_SPACE) {
-            attackA = false;
+            space = false;
         }
         if (code == KeyEvent.VK_ENTER) {
             enter = false;
@@ -77,31 +79,5 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ESCAPE) {
             esc = false;
         }
-
     }
-    public boolean isUp() {
-        return up;
-    }
-    public boolean isDown() {
-        return down;
-    }
-    public boolean isLeft() {
-        return left;
-    }
-    public boolean isRight() {
-        return right;
-    }
-    public boolean isRun() {
-        return run;
-    }
-    public boolean isAttackA() {
-        return attackA;
-    }
-    public boolean isEnter() {
-        return enter;
-    }
-    public boolean isEsc() {
-        return esc;
-    }
-
 }
