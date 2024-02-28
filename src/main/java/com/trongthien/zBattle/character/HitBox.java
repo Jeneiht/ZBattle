@@ -16,19 +16,5 @@ public class HitBox {
         this.height = height;
     }
 
-    public boolean isColliding(HitBox other) {
-        if(x>= other.x && x <= other.x + other.width && y >= other.y && y <= other.y + other.height) {
-            return true;
-        }
-        if(x + width >= other.x && x + width <= other.x + other.width && y >= other.y && y <= other.y + other.height) {
-            return true;
-        }
-        if(x >= other.x && x <= other.x + other.width && y + height >= other.y && y + height <= other.y + other.height) {
-            return true;
-        }
-        if(x + width >= other.x && x + width <= other.x + other.width && y + height >= other.y && y + height <= other.y + other.height) {
-            return true;
-        }
-        return false;
-    }
+
 }

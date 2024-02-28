@@ -14,7 +14,7 @@ public class World extends GameMap {
     @Override
     protected void loadEnemies() {
         for(int i = 0; i < 20; i++) {
-            Enemy enemy = new Scorpion1(this, 50 + i * 50, 50 + i * 50);
+            Enemy enemy = new Scorpion1(this, 50 + i * 50, 50 + i * 50, i);
             enemies.add(enemy);
         }
     }

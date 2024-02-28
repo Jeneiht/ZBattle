@@ -64,6 +64,12 @@ public abstract class GameMap {
         scanner.close();
         loadSolidTiles();
     }
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
+    }
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+    }
     private void loadSolidTiles() {
         Set<Integer> solidTiles = new HashSet<>();
         Scanner scanner = new Scanner(ResourceLoader.getInstance().loadInputStream(solidTilesPath));
@@ -99,7 +105,9 @@ public abstract class GameMap {
     }
     private void drawEnemies(Graphics2D g2d, Camera camera) {
         for (Enemy enemy : enemies) {
-            enemy.draw(g2d, camera);
+            if(enemy.getHealth() >0) {
+                enemy.draw(g2d, camera);
+            }
         }
     }
     public void draw(Graphics2D g2d, Camera camera){

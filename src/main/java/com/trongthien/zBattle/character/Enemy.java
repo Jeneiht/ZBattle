@@ -6,14 +6,21 @@ import com.trongthien.zBattle.GameMap.Tile;
 import com.trongthien.zBattle.GameMap.TileSet;
 import com.trongthien.zBattle.component.AnimationCounter;
 import com.trongthien.zBattle.component.CollisionChecker;
+import com.trongthien.zBattle.component.HitBoxUtils;
+import com.trongthien.zBattle.component.SharedCurrentContext;
 import com.trongthien.zBattle.constant.GameConstant;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
+@Setter
 public abstract class Enemy extends Entity {
+    public int id;
     protected int health;
     protected String enemyTileSetPath;
     TileSet enemyTileSet;
@@ -22,14 +29,16 @@ public abstract class Enemy extends Entity {
     protected int walkSpeed, runSpeed, idleSpeed;
     protected Map<Map<EnemyState, Direction>, Integer> maxFrame = new HashMap<>();
     protected Map<Map<EnemyState, Direction>, Integer> mapTileY = new HashMap<>();
-    boolean changeDirection = false;
+    boolean animationChanged;
     AnimationCounter animationCounter;
 
-    public Enemy(GameMap gameMap, int x, int y) {
+    public Enemy(GameMap gameMap, int x, int y, int id) {
+        this.id = id;
         this.gameMap = gameMap;
         this.x = x;
         this.y = y;
         collisionChecker = new CollisionChecker(gameMap);
+        changeDirection = false;
         setHealth();
         setEnemyTileSetPath();
         setHeight();
@@ -38,13 +47,14 @@ public abstract class Enemy extends Entity {
         setWalkSpeed();
         setRunSpeed();
         setIdleSpeed();
+        setCurrentMovement();
         enemyTileSet = new TileSet(enemyTileSetPath, width);
         enemyState = EnemyState.WALK;
         direction = Direction.values()[(int) (Math.random() * Direction.values().length)];
         animationCounter = new AnimationCounter(GameConstant.animationSpeed);
         load();
     }
-
+    protected abstract void setCurrentMovement();
     protected abstract void setRunSpeed();
 
     protected abstract void setWalkSpeed();
@@ -66,12 +76,12 @@ public abstract class Enemy extends Entity {
     }
 
     public void update() {
-        boolean animationChanged = false;
+        checkAttacked();
         EnemyState previousState = enemyState;
         Direction previousDirection = direction;
         updateSpeed();
         updateDirection();
-        move();
+        currentMovement.move(this);
         if (previousState != enemyState || previousDirection != direction) {
             animationChanged = true;
         }
@@ -86,6 +96,25 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    private void checkAttacked() {
+        if (isAttacked()) {
+            health -= SharedCurrentContext.getInstance().getCurrentPlayer().getDamage();
+            if (health <= 0) {
+                die();
+            }
+        }
+    }
+    private boolean isAttacked() {
+        if(SharedCurrentContext.getInstance().getCurrentPlayer().getPlayerState()==PlayerState.ATTACKA) {
+            if(HitBoxUtils.getInstance().isColliding(SharedCurrentContext.getInstance().getCurrentPlayer(), this, SharedCurrentContext.getInstance().getCurrentPlayer().getAttackAHitBox(), this.getBodyHitBox())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private void die() {
+        health = 0;
+    }
     private void updateSpeed() {
         if (enemyState == EnemyState.WALK) {
             speed = walkSpeed;
@@ -100,87 +129,6 @@ public abstract class Enemy extends Entity {
         if (changeDirection) {
             changeDirection = false;
             direction = Direction.values()[(int) (Math.random() * Direction.values().length)];
-        }
-    }
-
-    private void move() {
-        switch (direction) {
-            case UP:
-                y -= speed;
-                while (collisionChecker.checkCollisionTop(this)) {
-                    changeDirection = true;
-                    y++;
-                }
-                break;
-            case DOWN:
-                y += speed;
-                while (collisionChecker.checkCollisionBottom(this)) {
-                    changeDirection = true;
-                    y--;
-                }
-                break;
-            case LEFT:
-                x -= speed;
-                while (collisionChecker.checkCollisionLeft(this)) {
-                    changeDirection = true;
-                    x++;
-                }
-                break;
-            case RIGHT:
-                x += speed;
-                while (collisionChecker.checkCollisionRight(this)) {
-                    changeDirection = true;
-                    x--;
-                }
-                break;
-            case UP_LEFT:
-                y -= speed / 2;
-                while (collisionChecker.checkCollisionTop(this)) {
-                    changeDirection = true;
-                    y++;
-                }
-                x -= speed / 2;
-                while (collisionChecker.checkCollisionLeft(this)) {
-                    changeDirection = true;
-                    x++;
-                }
-                break;
-            case UP_RIGHT:
-                y -= speed / 2;
-                while (collisionChecker.checkCollisionTop(this)) {
-                    changeDirection = true;
-                    y++;
-                }
-                x += speed / 2;
-                while (collisionChecker.checkCollisionRight(this)) {
-                    changeDirection = true;
-                    x--;
-                }
-                break;
-            case DOWN_LEFT:
-                y += speed / 2;
-                while (collisionChecker.checkCollisionBottom(this)) {
-                    changeDirection = true;
-                    y--;
-                }
-                x -= speed / 2;
-                while (collisionChecker.checkCollisionLeft(this)) {
-                    changeDirection = true;
-                    x++;
-                }
-                break;
-            case DOWN_RIGHT:
-                y += speed / 2;
-                while (collisionChecker.checkCollisionBottom(this)) {
-                    changeDirection = true;
-                    y--;
-                }
-                x += speed / 2;
-                while (collisionChecker.checkCollisionRight(this)) {
-                    changeDirection = true;
-                    x--;
-                }
-                break;
         }
     }
     private void loadFrameInfo() {
