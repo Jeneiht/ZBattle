@@ -6,7 +6,7 @@ public class KeyHandler implements KeyListener {
     //Singleton
 
     public static KeyHandler keyHandler;
-    private boolean up, down, left, right,run, attack, enter, esc;
+    private boolean up, down, left, right,run, attackA, enter, esc;
 
     private KeyHandler() {
     }
@@ -40,7 +40,7 @@ public class KeyHandler implements KeyListener {
             right = true;
         }
         if (code == KeyEvent.VK_SPACE) {
-            attack = true;
+            attackA = true;
         }
         if (code == KeyEvent.VK_ENTER) {
             enter = true;
@@ -48,7 +48,6 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ESCAPE) {
             esc = true;
         }
-
     }
 
     @Override
@@ -70,7 +69,7 @@ public class KeyHandler implements KeyListener {
             right = false;
         }
         if (code == KeyEvent.VK_SPACE) {
-            attack = false;
+            attackA = false;
         }
         if (code == KeyEvent.VK_ENTER) {
             enter = false;
@@ -95,8 +94,8 @@ public class KeyHandler implements KeyListener {
     public boolean isRun() {
         return run;
     }
-    public boolean isAttack() {
-        return attack;
+    public boolean isAttackA() {
+        return attackA;
     }
     public boolean isEnter() {
         return enter;
