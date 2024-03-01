@@ -4,6 +4,7 @@ import com.trongthien.zBattle.component.SharedCurrentContext;
 import com.trongthien.zBattle.screen.MainPanel;
 
 import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Z Battle");

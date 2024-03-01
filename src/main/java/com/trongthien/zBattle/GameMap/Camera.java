@@ -16,8 +16,8 @@ public class Camera {
         update();
     }
     public void update() {
-        x= player.x+ GameConstant.tileSize/2-GameConstant.screenWidth/2;
-        y= player.y+GameConstant.tileSize/2-GameConstant.screenHeight/2;
+        x= player.getX()+ GameConstant.tileSize/2-GameConstant.screenWidth/2;
+        y= player.getY()+GameConstant.tileSize/2-GameConstant.screenHeight/2;
         if(x<0) x=0;
         if(y<0) y=0;
         if(x+ GameConstant.screenWidth>gameMap.width){

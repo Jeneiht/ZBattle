@@ -24,8 +24,8 @@ public class MainPanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(KeyHandler.getInstance());
         this.setFocusable(true);
+        SharedCurrentContext.getInstance().setCurrentPlayer(new Hero());
         SharedCurrentContext.getInstance().setCurrentGameMap(new World());
-        SharedCurrentContext.getInstance().setCurrentPlayer(new Hero(SharedCurrentContext.getInstance().getCurrentGameMap()));
         camera = new Camera(SharedCurrentContext.getInstance().getCurrentPlayer(), SharedCurrentContext.getInstance().getCurrentGameMap());
     }
 
@@ -53,7 +53,6 @@ public class MainPanel extends JPanel implements Runnable {
     }
 
     private void update() {
-        SharedCurrentContext.getInstance().getCurrentPlayer().update();
         SharedCurrentContext.getInstance().getCurrentGameMap().update();
         camera.update();
     }
@@ -63,7 +62,6 @@ public class MainPanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         SharedCurrentContext.getInstance().getCurrentGameMap().draw(g2d, camera);
-        SharedCurrentContext.getInstance().getCurrentPlayer().draw(g2d, camera);
         g2d.dispose();
     }
 }

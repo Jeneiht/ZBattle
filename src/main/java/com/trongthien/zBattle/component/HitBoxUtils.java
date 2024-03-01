@@ -9,61 +9,38 @@ public class HitBoxUtils {
 
     private HitBoxUtils() {
     }
-
     public static HitBoxUtils getInstance() {
         if (instance == null) {
             instance = new HitBoxUtils();
         }
         return instance;
     }
-
-    public boolean isColliding(Entity entity1, Entity entity2, HitBox hitBox1, HitBox hitBox2) {
-        if (entity1.getX() + hitBox1.getX() >= entity2.getX() + hitBox2.getY() &&
-                entity1.getX() + hitBox1.getX() <= entity2.getX() + hitBox2.getX() + hitBox2.getWidth() &&
-                entity1.getY() + hitBox1.getY() >= entity2.getY() + hitBox2.getY() &&
-                entity1.getY() + hitBox1.getY() <= entity2.getY() + hitBox2.getY() + hitBox2.getHeight()) {
+    public boolean checkCollide(HitBox hitBox1, HitBox hitBox2) {
+        if(hitBox1 == null || hitBox2 == null) {
+            return false;
+        }
+        if(hitBox1.getX() >= hitBox2.getX() &&
+                hitBox1.getX()<= hitBox2.getX() + hitBox2.getWidth() &&
+                hitBox1.getY() >= hitBox2.getY() &&
+                hitBox1.getY() <= hitBox2.getY() + hitBox2.getHeight()) {
             return true;
         }
-        if (entity1.getX() + hitBox1.getX() + hitBox1.getWidth() >= entity2.getX() + hitBox2.getX() &&
-                entity1.getX() + hitBox1.getX() + hitBox1.getWidth() <= entity2.getX() + hitBox2.getX() + hitBox2.getWidth() &&
-                entity1.getY() + hitBox1.getY() >= entity2.getY() + hitBox2.getY() &&
-                entity1.getY() + hitBox1.getY() <= entity2.getY() + hitBox2.getY() + hitBox2.getHeight()) {
+        if(hitBox1.getX() + hitBox1.getWidth() >= hitBox2.getX() &&
+                hitBox1.getX() + hitBox1.getWidth() <= hitBox2.getX() + hitBox2.getWidth() &&
+                hitBox1.getY() >= hitBox2.getY() &&
+                hitBox1.getY() <= hitBox2.getY() + hitBox2.getHeight()) {
             return true;
         }
-        if (entity1.getX() + hitBox1.getX() >= entity2.getX() + hitBox2.getX() &&
-                entity1.getX() + hitBox1.getX() <= entity2.getX() + hitBox2.getX() + hitBox2.getWidth() &&
-                entity1.getY() + hitBox1.getY() + hitBox1.getHeight() >= entity2.getY() + hitBox2.getY() &&
-                entity1.getY() + hitBox1.getY() + hitBox1.getHeight() <= entity2.getY() + hitBox2.getY() + hitBox2.getHeight()) {
+        if(hitBox1.getX() >= hitBox2.getX() &&
+                hitBox1.getX() <= hitBox2.getX() + hitBox2.getWidth() &&
+                hitBox1.getY() + hitBox1.getHeight() >= hitBox2.getY() &&
+                hitBox1.getY() + hitBox1.getHeight() <= hitBox2.getY() + hitBox2.getHeight()) {
             return true;
         }
-        if (entity1.getX() + hitBox1.getX() + hitBox1.getWidth() >= entity2.getX() + hitBox2.getX() &&
-                entity1.getX() + hitBox1.getX() + hitBox1.getWidth() <= entity2.getX() + hitBox2.getX() + hitBox2.getWidth() &&
-                entity1.getY() + hitBox1.getY() + hitBox1.getHeight() >= entity2.getY() + hitBox2.getY() &&
-                entity1.getY() + hitBox1.getY() + hitBox1.getHeight() <= entity2.getY() + hitBox2.getY() + hitBox2.getHeight()) {
-            return true;
-        }
-        if(entity2.getX() + hitBox2.getX() >= entity1.getX() + hitBox1.getX() &&
-                entity2.getX() + hitBox2.getX() <= entity1.getX() + hitBox1.getX() + hitBox1.getWidth() &&
-                entity2.getY() + hitBox2.getY() >= entity1.getY() + hitBox1.getY() &&
-                entity2.getY() + hitBox2.getY() <= entity1.getY() + hitBox1.getY() + hitBox1.getHeight()){
-            return true;
-        }
-        if(entity2.getX() + hitBox2.getX() + hitBox2.getWidth() >= entity1.getX() + hitBox1.getX() &&
-                entity2.getX() + hitBox2.getX() + hitBox2.getWidth() <= entity1.getX() + hitBox1.getX() + hitBox1.getWidth() &&
-                entity2.getY() + hitBox2.getY() >= entity1.getY() + hitBox1.getY() &&
-                entity2.getY() + hitBox2.getY() <= entity1.getY() + hitBox1.getY() + hitBox1.getHeight()){
-            return true;
-        }
-        if(entity2.getX() + hitBox2.getX() >= entity1.getX() + hitBox1.getX() &&
-                entity2.getX() + hitBox2.getX() <= entity1.getX() + hitBox1.getX() + hitBox1.getWidth() &&
-                entity2.getY() + hitBox2.getY() + hitBox2.getHeight() >= entity1.getY() + hitBox1.getY() &&
-                entity2.getY() + hitBox2.getY() + hitBox2.getHeight() <= entity1.getY() + hitBox1.getY() + hitBox1.getHeight()){
-            return true;
-        }
-        if(entity2.getX() + hitBox2.getX() + hitBox2.getWidth() >= entity1.getX() + hitBox1.getX() &&
-                entity2.getX() + hitBox2.getX() + hitBox2.getWidth() <= entity1.getX() + hitBox1.getX() + hitBox1.getWidth() &&
-                entity2.getY() + hitBox2.getY() + hitBox2.getHeight() >= entity1.getY() + hitBox1.getY() &&
-                entity2.getY() + hitBox2.getY() + hitBox2.getHeight() <= entity1.getY() + hitBox1.getY() + hitBox1.getHeight()){
+        if(hitBox1.getX() + hitBox1.getWidth() >= hitBox2.getX() &&
+                hitBox1.getX() + hitBox1.getWidth() <= hitBox2.getX() + hitBox2.getWidth() &&
+                hitBox1.getY() + hitBox1.getHeight() >= hitBox2.getY() &&
+                hitBox1.getY() + hitBox1.getHeight() <= hitBox2.getY() + hitBox2.getHeight()) {
             return true;
         }
         return false;

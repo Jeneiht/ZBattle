@@ -9,22 +9,17 @@ public class AnimationCounter {
     public int frame;
     public int maxFrame;
     public int animationSpeed;
-    public boolean blocked = false;
 
     public AnimationCounter(int animationSpeed) {
         counter = 0;
         frame = 0;
+        maxFrame=0;
         this.animationSpeed = animationSpeed;
     }
 
-    public void start(int maxFrame, boolean blocked) {
-        if (this.blocked && !isEndAnimation()) {
-            update();
-            return;
-        }
+    public void start(int maxFrame) {
         frame = 0;
         this.maxFrame = maxFrame;
-        this.blocked = blocked;
         counter = 0;
     }
 
@@ -38,12 +33,10 @@ public class AnimationCounter {
             }
         }
     }
-
-    public boolean isEndAnimation() {
+    public boolean isFinished() {
         return frame == maxFrame - 1;
     }
-
-    public boolean isBlocked() {
-        return blocked;
+    public boolean isStarting() {
+        return frame == 0&&counter==0;
     }
 }

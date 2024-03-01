@@ -1,17 +1,25 @@
 package com.trongthien.zBattle.character;
 
-import Movement.NormalMovement;
-import Movement.RandomMovement;
-import com.trongthien.zBattle.GameMap.GameMap;
+import com.trongthien.zBattle.Attack.ScorpionAttack;
+import com.trongthien.zBattle.Movement.BFSPathFindingMovement;
+import com.trongthien.zBattle.Movement.LocalPathFindingMovement;
+import com.trongthien.zBattle.Movement.RandomMovement;
+
+import java.util.Map;
 
 public class Scorpion1 extends Enemy {
-    public Scorpion1(GameMap gameMap, int x, int y, int id) {
-        super(gameMap, x, y, id);
+    public Scorpion1(int x, int y) {
+        super(x, y);
+    }
+
+    @Override
+    public HitBox getHitBox() {
+        return new HitBox(x, y, 32, 32);
     }
 
     @Override
     protected void setCurrentMovement() {
-        currentMovement = new RandomMovement();
+        currentMovement = new BFSPathFindingMovement();
     }
 
     @Override
@@ -40,10 +48,6 @@ public class Scorpion1 extends Enemy {
     }
 
     @Override
-    protected void setBodyHitBox() {
-        bodyHitBox = new HitBox(0,0,32,32);
-    }
-    @Override
     protected void setWidth() {
         width = 32;
     }
@@ -51,5 +55,37 @@ public class Scorpion1 extends Enemy {
     @Override
     protected void setHeight() {
         height = 32;
+    }
+
+    @Override
+    protected void updateEnemyState() {
+        enemyState = EnemyState.ATTACK;
+    }
+
+    @Override
+    protected void setCurrentAttack(EnemyState enemyState) {
+        currentAttack = new ScorpionAttack(this);
+    }
+    @Override
+    protected void loadFrameInfo() {
+        //init mapTileY
+        mapTileY.put(Map.of(EnemyState.IDLE, Direction.DOWN), 3);
+        mapTileY.put(Map.of(EnemyState.IDLE, Direction.RIGHT), 3);
+        mapTileY.put(Map.of(EnemyState.IDLE, Direction.UP), 3);
+        mapTileY.put(Map.of(EnemyState.IDLE, Direction.LEFT), 3);
+        mapTileY.put(Map.of(EnemyState.WALK, Direction.DOWN), 1);
+        mapTileY.put(Map.of(EnemyState.WALK, Direction.RIGHT), 1);
+        mapTileY.put(Map.of(EnemyState.WALK, Direction.UP), 1);
+        mapTileY.put(Map.of(EnemyState.WALK, Direction.LEFT), 1);
+        mapTileY.put(Map.of(EnemyState.ATTACK, Direction.DOWN), 2);
+        mapTileY.put(Map.of(EnemyState.ATTACK, Direction.RIGHT), 2);
+        mapTileY.put(Map.of(EnemyState.ATTACK, Direction.UP), 2);
+        mapTileY.put(Map.of(EnemyState.ATTACK, Direction.LEFT), 2);
+
+
+        //init maxFrame
+        maxFrame.put(EnemyState.IDLE, 3);
+        maxFrame.put(EnemyState.WALK, 3);
+        maxFrame.put(EnemyState.ATTACK, 3);
     }
 }
