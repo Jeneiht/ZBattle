@@ -9,6 +9,14 @@ public class Hero extends Player {
     }
 
     @Override
+    protected void setAttackAHitBox() {
+        attackAHitBox.put(Direction.DOWN, new HitBox(0, 24, 64, 40));
+        attackAHitBox.put(Direction.UP, new HitBox(0, 0, 64, 40));
+        attackAHitBox.put(Direction.LEFT, new HitBox(0, 0, 40, 64));
+        attackAHitBox.put(Direction.RIGHT, new HitBox(24, 0, 40, 64));
+    }
+
+    @Override
     protected void setBodyHitBox() {
         bodyHitBox = new HitBox(24,32,16,16);
     }

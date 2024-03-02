@@ -18,7 +18,7 @@ public class AnimationCounter {
     }
 
     public void start(int maxFrame, boolean blocked) {
-        if (this.blocked && !endAnimation()) {
+        if (this.blocked && !isEndAnimation()) {
             update();
             return;
         }
@@ -39,7 +39,7 @@ public class AnimationCounter {
         }
     }
 
-    public boolean endAnimation() {
+    public boolean isEndAnimation() {
         return frame == maxFrame - 1;
     }
 

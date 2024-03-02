@@ -4,6 +4,7 @@ import com.trongthien.zBattle.GameMap.Camera;
 import com.trongthien.zBattle.GameMap.GameMap;
 import com.trongthien.zBattle.GameMap.World;
 import com.trongthien.zBattle.character.Hero;
+import com.trongthien.zBattle.component.SharedCurrentContext;
 import com.trongthien.zBattle.constant.GameConstant;
 import com.trongthien.zBattle.character.Player;
 import com.trongthien.zBattle.key.KeyHandler;
@@ -15,9 +16,7 @@ import java.awt.*;
 
 public class MainPanel extends JPanel implements Runnable {
     Thread thread;
-    public GameMap currentGameMap= new World();
-    public Player currentPlayer = new Hero(currentGameMap);
-    public Camera camera = new Camera(currentPlayer, currentGameMap);
+    public Camera camera;
 
     public MainPanel() {
         this.setPreferredSize(new Dimension(GameConstant.screenWidth, GameConstant.screenHeight));
@@ -25,6 +24,9 @@ public class MainPanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(KeyHandler.getInstance());
         this.setFocusable(true);
+        SharedCurrentContext.getInstance().setCurrentGameMap(new World());
+        SharedCurrentContext.getInstance().setCurrentPlayer(new Hero(SharedCurrentContext.getInstance().getCurrentGameMap()));
+        camera = new Camera(SharedCurrentContext.getInstance().getCurrentPlayer(), SharedCurrentContext.getInstance().getCurrentGameMap());
     }
 
     public void startGameThread() {
@@ -51,8 +53,8 @@ public class MainPanel extends JPanel implements Runnable {
     }
 
     private void update() {
-        currentPlayer.update();
-        currentGameMap.update();
+        SharedCurrentContext.getInstance().getCurrentPlayer().update();
+        SharedCurrentContext.getInstance().getCurrentGameMap().update();
         camera.update();
     }
 
@@ -60,8 +62,8 @@ public class MainPanel extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        currentGameMap.draw(g2d, camera);
-        currentPlayer.draw(g2d, camera);
+        SharedCurrentContext.getInstance().getCurrentGameMap().draw(g2d, camera);
+        SharedCurrentContext.getInstance().getCurrentPlayer().draw(g2d, camera);
         g2d.dispose();
     }
 }

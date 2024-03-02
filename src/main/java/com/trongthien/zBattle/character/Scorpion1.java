@@ -1,10 +1,17 @@
 package com.trongthien.zBattle.character;
 
+import Movement.NormalMovement;
+import Movement.RandomMovement;
 import com.trongthien.zBattle.GameMap.GameMap;
 
 public class Scorpion1 extends Enemy {
-    public Scorpion1(GameMap gameMap, int x, int y) {
-        super(gameMap, x, y);
+    public Scorpion1(GameMap gameMap, int x, int y, int id) {
+        super(gameMap, x, y, id);
+    }
+
+    @Override
+    protected void setCurrentMovement() {
+        currentMovement = new RandomMovement();
     }
 
     @Override

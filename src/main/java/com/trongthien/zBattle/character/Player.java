@@ -1,5 +1,6 @@
 package com.trongthien.zBattle.character;
 
+import Movement.NormalMovement;
 import com.trongthien.zBattle.GameMap.Camera;
 import com.trongthien.zBattle.GameMap.GameMap;
 import com.trongthien.zBattle.GameMap.Tile;
@@ -8,15 +9,19 @@ import com.trongthien.zBattle.component.AnimationCounter;
 import com.trongthien.zBattle.component.CollisionChecker;
 import com.trongthien.zBattle.constant.GameConstant;
 import com.trongthien.zBattle.key.KeyHandler;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Getter
+@Setter
 public abstract class Player extends Entity {
     protected int health;
+    protected int damage=100;
     protected PlayerState playerState;
     //state: idle, walk, run, attackA, attackB, attackC, idleDrawn, walkDrawn, hurtDrawn, sheath
     protected String playerTileSetPath;
@@ -28,17 +33,20 @@ public abstract class Player extends Entity {
     protected Map<Map<PlayerState, Direction>, Integer> maxFrame = new HashMap<>();
     protected Map<Map<PlayerState, Direction>, Integer> mapTileY = new HashMap<>();
     AnimationCounter animationCounter;
+    Map<Direction, HitBox> attackAHitBox = new HashMap<>();
 
     protected Player(GameMap gameMap) {
         this.gameMap = gameMap;
         collisionChecker = new CollisionChecker(gameMap);
         this.x = gameMap.getSpawnX();
         this.y = gameMap.getSpawnY();
+        currentMovement = new NormalMovement();
         setHealth();
         setPlayerTileSetPath();
         setHeight();
         setWidth();
         setBodyHitBox();
+        setAttackAHitBox();
         setIdleSpeed();
         setWalkSpeed();
         setRunSpeed();
@@ -48,6 +56,10 @@ public abstract class Player extends Entity {
         animationCounter = new AnimationCounter(GameConstant.animationSpeed);
         load();
     }
+    public HitBox getAttackAHitBox(){
+        return attackAHitBox.get(Direction.force(direction));
+    }
+    protected abstract void setAttackAHitBox();
     protected abstract void setBodyHitBox();
     protected abstract void setHealth();
 
@@ -73,11 +85,11 @@ public abstract class Player extends Entity {
         PlayerState previousState = playerState;
         Direction previousDirection = direction;
         updateSpeed();
-        if (!animationCounter.isBlocked() || animationCounter.endAnimation()) {
+        if (!animationCounter.isBlocked() || animationCounter.isEndAnimation()) {
             updatePlayerState();
         }
         updateDirection();
-        move();
+        currentMovement.move(this);
         if (previousState != playerState || previousDirection != direction) {
             animationChanged = true;
         }
@@ -118,76 +130,6 @@ public abstract class Player extends Entity {
             direction = Direction.DOWN_RIGHT;
         }
     }
-
-    private void move() {
-        switch (direction) {
-            case UP:
-                y -= speed;
-                while (collisionChecker.checkCollisionTop(this)) {
-                    y++;
-                }
-                break;
-            case DOWN:
-                y += speed;
-                while (collisionChecker.checkCollisionBottom(this)) {
-                    y--;
-                }
-                break;
-            case LEFT:
-                x -= speed;
-                while (collisionChecker.checkCollisionLeft(this)) {
-                    x++;
-                }
-                break;
-            case RIGHT:
-                x += speed;
-                while (collisionChecker.checkCollisionRight(this)) {
-                    x--;
-                }
-                break;
-            case UP_LEFT:
-                y -= speed / 2;
-                while (collisionChecker.checkCollisionTop(this)) {
-                    y++;
-                }
-                x -= speed / 2;
-                while (collisionChecker.checkCollisionLeft(this)) {
-                    x++;
-                }
-                break;
-            case UP_RIGHT:
-                y -= speed / 2;
-                while (collisionChecker.checkCollisionTop(this)) {
-                    y++;
-                }
-                x += speed / 2;
-                while (collisionChecker.checkCollisionRight(this)) {
-                    x--;
-                }
-                break;
-            case DOWN_LEFT:
-                y += speed / 2;
-                while (collisionChecker.checkCollisionBottom(this)) {
-                    y--;
-                }
-                x -= speed / 2;
-                while (collisionChecker.checkCollisionLeft(this)) {
-                    x++;
-                }
-                break;
-            case DOWN_RIGHT:
-                y += speed / 2;
-                while (collisionChecker.checkCollisionBottom(this)) {
-                    y--;
-                }
-                x += speed / 2;
-                while (collisionChecker.checkCollisionRight(this)) {
-                    x--;
-                }
-                break;
-        }
-    }
-
     private void updateSpeed() {
         if (KeyHandler.getInstance().isUp() || KeyHandler.getInstance().isDown() || KeyHandler.getInstance().isLeft() || KeyHandler.getInstance().isRight()) {
             if (KeyHandler.getInstance().isShift()) {
@@ -262,5 +204,9 @@ public abstract class Player extends Entity {
         Tile tile = new Tile(playerTileSet, tileX, tileY, width, height);
         BufferedImage heroImage = tile.getImage();
         g2d.drawImage(heroImage, x - camera.getX(), y - camera.getY(), null);
+        if(playerState == PlayerState.ATTACKA){
+            g2d.setColor(Color.RED);
+            g2d.drawRect(x+attackAHitBox.get(Direction.force(direction)).getX() - camera.getX(), y+attackAHitBox.get(Direction.force(direction)).getY() - camera.getY(), attackAHitBox.get(Direction.force(direction)).getWidth(), attackAHitBox.get(Direction.force(direction)).getHeight());
+        }
     }
 }
