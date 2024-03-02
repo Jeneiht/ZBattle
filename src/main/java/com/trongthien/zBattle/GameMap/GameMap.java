@@ -24,8 +24,7 @@ public abstract class GameMap {
     protected int tileSize;
     protected int width;
     protected int height;
-    protected Tile[][] tiles;
-
+    protected ArrayList<ArrayList<ArrayList<Tile>>> tiles;
     protected String tileSetPath;
     protected String gameMapPath;
     protected String solidTilesPath;
@@ -51,8 +50,9 @@ public abstract class GameMap {
         spawnPlayer();
         width = maxCol * tileSize;
         height = maxRow * tileSize;
-        tiles = new Tile[maxRow][maxCol];
         tileSet = new TileSet(tileSetPath, tileSize);
+        System.out.println("tileSet.getMaxCol() = " + tileSet.getMaxCol());
+        System.out.println("tileSet.getMaxRow() = " + tileSet.getMaxRow());
         load();
         loadEntities();
     }
@@ -81,15 +81,28 @@ public abstract class GameMap {
     }
 
     protected void load() {
-        Scanner scanner = new Scanner(ResourceLoader.getInstance().loadInputStream(gameMapPath));
-        for (int row = 0; row < maxRow; row++) {
-            String line = scanner.nextLine();
-            for (int col = 0; col < maxCol; col++) {
-                tiles[row][col] = getTile(Integer.parseInt(line.split(",")[col]));
+        ArrayList<String> layers = XMLReader.getInstance().readMap(gameMapPath);
+        tiles = new ArrayList<>(layers.size());
+        for (int i = 0; i < layers.size(); i++) {
+            tiles.add(new ArrayList<>(maxRow));
+            for (int x = 0; x < maxRow; x++) {
+                tiles.get(i).add(new ArrayList<>(maxCol));
+                for (int y = 0; y < maxCol; y++) {
+                    tiles.get(i).get(x).add(null);
+                }
             }
         }
-        scanner.close();
-        loadSolidTiles();
+        for (int i = 0; i < layers.size(); i++) {
+            String lines[] = layers.get(i).split("\\s+");
+            for (int x = 0; x < maxRow; x++) {
+                String nums[] = lines[x + 1].split(",");
+                for (int y = 0; y < maxCol; y++) {
+                    int id = Integer.parseInt(nums[y]);
+                    tiles.get(i).get(x).set(y, getTile(id));
+                }
+            }
+        }
+        //loadSolidTiles();
     }
 
     public void addEntity(Entity entity) {
@@ -115,23 +128,18 @@ public abstract class GameMap {
         for (String num : line.split(",")) {
             solidTiles.add(Integer.parseInt(num));
         }
-        scanner = new Scanner(ResourceLoader.getInstance().loadInputStream(gameMapPath));
-        for (int row = 0; row < maxRow; row++) {
-            line = scanner.nextLine();
-            for (int col = 0; col < maxCol; col++) {
-                if (solidTiles.contains(Integer.parseInt(line.split(",")[col]))) {
-                    tiles[row][col].setSolid(true);
-                }
-            }
-        }
         scanner.close();
     }
 
     private Tile getTile(int id) {
+        if(id>0){
+            id--;
+        }
         int x = id % tileSet.getMaxCol();
         int y = id / tileSet.getMaxRow();
         return new Tile(tileSet, x, y, tileSize, tileSize);
     }
+
     public void update() {
         updateEntities();
         updateAttacks();
@@ -196,15 +204,18 @@ public abstract class GameMap {
     public boolean isSolidTile(int x, int y) {
         int row = y / tileSize;
         int col = x / tileSize;
-        return tiles[row][col].isSolid();
+        //return tiles[row][col].isSolid();
+        return false;
     }
 
     public void draw(Graphics2D g2d, Camera camera) {
         int startRow = camera.getY() / tileSize;
         int startCol = camera.getX() / tileSize;
-        for (int i = startRow; i <= startRow + GameConstant.maxScreenRow && i < maxRow; i++) {
-            for (int j = startCol; j <= startCol + GameConstant.maxScreenCol && j < maxCol; j++) {
-                g2d.drawImage(tiles[i][j].getImage(), j * tileSize - camera.getX(), i * tileSize - camera.getY(), null);
+        for (int i = 0; i < tiles.size(); i++) {
+            for (int x = startRow; x <= startRow + GameConstant.maxScreenRow && x < maxRow; x++) {
+                for (int y = startCol; y <= startCol + GameConstant.maxScreenCol && y < maxCol; y++) {
+                    g2d.drawImage(tiles.get(i).get(x).get(y).getImage(), y * tileSize - camera.getX(), x * tileSize - camera.getY(), null);
+                }
             }
         }
         drawEntities(g2d, camera);

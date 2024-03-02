@@ -1,7 +1,7 @@
 package com.trongthien.zBattle.constant;
 
 public class GameConstant {
-    public static final int originalTileSize = 32;
+    public static final int originalTileSize = 16;
     public static final int scale = 1;
     public static final int minSpeed = 1;
     public static final int tileSize = originalTileSize * scale;

@@ -13,13 +13,15 @@ public class TileSet {
     public int maxCol;
     public int maxRow;
     public int tileSize;
-    public TileSet(String path,int tileSize) {
+
+    public TileSet(String path, int tileSize) {
         this.tileSize = tileSize;
         image = ResourceLoader.getInstance().loadImage(path);
-        maxCol = image.getWidth()/tileSize;
-        maxRow = image.getHeight()/tileSize;
+        maxCol = image.getWidth() / tileSize;
+        maxRow = image.getHeight() / tileSize;
 
     }
+
     public BufferedImage getImage() {
         return image;
     }

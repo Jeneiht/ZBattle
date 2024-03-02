@@ -12,6 +12,7 @@ import com.trongthien.zBattle.key.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.TimerTask;
 
 
 public class MainPanel extends JPanel implements Runnable {
@@ -36,20 +37,28 @@ public class MainPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000.0 / GameConstant.FPS;
-        double delta = 0;
-        long lastTime = System.nanoTime();
-        long currentTime;
-        while (true) {
-            currentTime = System.nanoTime();
-            delta += (currentTime - lastTime) / drawInterval;
-            lastTime = currentTime;
-            if (delta >= 1) {
-                update();
-                repaint();
-                delta--;
-            }
-        }
+//        double drawInterval = 1000000000.0 / GameConstant.FPS;
+//        double delta = 0;
+//        long lastTime = System.nanoTime();
+//        long currentTime;
+//        while (true) {
+//            currentTime = System.nanoTime();
+//            delta += (currentTime - lastTime) / drawInterval;
+//            lastTime = currentTime;
+//            if (delta >= 1) {
+//                update();
+//                repaint();
+//                delta--;
+//            }
+//        }
+
+        //use timer
+        Timer timer = new Timer(1 / (GameConstant.FPS*100), e -> {
+            update();
+            repaint();
+        });
+        timer.start();
+
     }
 
     private void update() {
