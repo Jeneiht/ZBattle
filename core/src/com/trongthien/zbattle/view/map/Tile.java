@@ -20,9 +20,8 @@ public class Tile {
     }
 
     public Tile(TileSet tileSet, int x, int y, int tileWidth, int tileHeight) {
-        this.textureRegion = new TextureRegion(tileSet.getTexture(), x * tileWidth, y * tileHeight, tileWidth, tileHeight);
         //this.textureRegion.flip(false, true);
-        //this.textureRegion = getCacheImage(tileSet, x, y, tileWidth, tileHeight).getTextureRegion();
+        this.textureRegion = getCacheImage(tileSet, x, y, tileWidth, tileHeight).getTextureRegion();
     }
 
     public static Tile getCacheImage(TileSet tileSet, int x, int y, int tileWidth, int tileHeight) {

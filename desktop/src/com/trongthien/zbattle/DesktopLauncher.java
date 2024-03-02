@@ -10,7 +10,10 @@ import java.awt.*;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setForegroundFPS(GameConstant.FPS);
+		config.setForegroundFPS(0);
+		config.setIdleFPS(0);
+		config.setTransparentFramebuffer(true);
+		
 		config.setTitle("ZBattle2");
 		config.useVsync(true);
 		config.setWindowedMode(GameConstant.screenWidth, GameConstant.screenHeight);
