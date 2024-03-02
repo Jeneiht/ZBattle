@@ -48,8 +48,6 @@ public abstract class GameMap {
         width = maxCol * tileSize;
         height = maxRow * tileSize;
         tileSet = new TileSet(tileSetPath, tileSize);
-        System.out.println("tileSet.getMaxCol() = " + tileSet.getMaxCol());
-        System.out.println("tileSet.getMaxRow() = " + tileSet.getMaxRow());
         load();
         loadEntities();
     }
@@ -133,6 +131,7 @@ public abstract class GameMap {
             id--;
         }
         if (id == 0) return null;
+        id%=tileSet.getMaxCol()*tileSet.getMaxRow();
         int x = id % tileSet.getMaxCol();
         int y = id / tileSet.getMaxRow();
         return new Tile(tileSet, x, y, tileSize, tileSize);

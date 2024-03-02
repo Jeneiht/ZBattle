@@ -38,12 +38,12 @@ public class World extends GameMap {
 
     @Override
     protected void setSpawnX() {
-        spawnX = 50;
+        spawnX = 304;
     }
 
     @Override
     protected void setSpawnY() {
-        spawnY = 50;
+        spawnY = 116;
     }
 
     @Override
