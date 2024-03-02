@@ -1,22 +1,9 @@
 package com.trongthien.zBattle.GameMap;
 
 
-import com.trongthien.zBattle.character.Enemy;
-import com.trongthien.zBattle.character.Scorpion1;
-
-import java.awt.*;
-
 public class World extends GameMap {
     public World() {
         super();
-    }
-
-    @Override
-    protected void loadEnemies() {
-        for(int i = 0; i < 20; i++) {
-            Enemy enemy = new Scorpion1(this, 50 + i * 50, 50 + i * 50, i);
-            enemies.add(enemy);
-        }
     }
 
     @Override
@@ -31,12 +18,12 @@ public class World extends GameMap {
 
     @Override
     protected void setTileSize() {
-        tileSize = 32;
+        tileSize = 16;
     }
 
     @Override
     protected void setGameMapPath() {
-        gameMapPath = "/map/world.txt";
+        gameMapPath = "src/main/resources/map/lmao.xml";
     }
 
     @Override
@@ -46,7 +33,7 @@ public class World extends GameMap {
 
     @Override
     protected void setTileSetPath() {
-        tileSetPath = "/map/world_tiles.png";
+        tileSetPath = "/map/lmaoTileSet.png";
     }
 
     @Override
@@ -57,6 +44,13 @@ public class World extends GameMap {
     @Override
     protected void setSpawnY() {
         spawnY = 50;
+    }
+
+    @Override
+    public void loadEntities() {
+//        addEntity(new Scorpion1(100, 100));
+//        addEntity(new Scorpion1(100, 200));
+//        addEntity(new Scorpion1(100, 300));
     }
 
 }

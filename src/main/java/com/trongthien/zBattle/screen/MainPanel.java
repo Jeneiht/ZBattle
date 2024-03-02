@@ -1,14 +1,11 @@
 package com.trongthien.zBattle.screen;
 
 import com.trongthien.zBattle.GameMap.Camera;
-import com.trongthien.zBattle.GameMap.GameMap;
 import com.trongthien.zBattle.GameMap.World;
 import com.trongthien.zBattle.character.Hero;
-import com.trongthien.zBattle.component.SharedCurrentContext;
+import com.trongthien.zBattle.component.SharedContext;
 import com.trongthien.zBattle.constant.GameConstant;
-import com.trongthien.zBattle.character.Player;
 import com.trongthien.zBattle.key.KeyHandler;
-
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,9 +21,9 @@ public class MainPanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(KeyHandler.getInstance());
         this.setFocusable(true);
-        SharedCurrentContext.getInstance().setCurrentGameMap(new World());
-        SharedCurrentContext.getInstance().setCurrentPlayer(new Hero(SharedCurrentContext.getInstance().getCurrentGameMap()));
-        camera = new Camera(SharedCurrentContext.getInstance().getCurrentPlayer(), SharedCurrentContext.getInstance().getCurrentGameMap());
+        SharedContext.getInstance().setCurrentPlayer(new Hero());
+        SharedContext.getInstance().setCurrentGameMap(new World());
+        camera = new Camera(SharedContext.getInstance().getCurrentPlayer(), SharedContext.getInstance().getCurrentGameMap());
     }
 
     public void startGameThread() {
@@ -36,7 +33,7 @@ public class MainPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000.0 / GameConstant.FPS;
+        double drawInterval = 1000000000 / GameConstant.FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -53,17 +50,24 @@ public class MainPanel extends JPanel implements Runnable {
     }
 
     private void update() {
-        SharedCurrentContext.getInstance().getCurrentPlayer().update();
-        SharedCurrentContext.getInstance().getCurrentGameMap().update();
+        SharedContext.getInstance().getCurrentGameMap().update();
         camera.update();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        long startTime = System.nanoTime();
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        SharedCurrentContext.getInstance().getCurrentGameMap().draw(g2d, camera);
-        SharedCurrentContext.getInstance().getCurrentPlayer().draw(g2d, camera);
+        SharedContext.getInstance().getCurrentGameMap().draw(g2d, camera);
+
+        long endTime = System.nanoTime();
+        double duration = (endTime - startTime) / 1000000;
+        if (duration <= 0) {
+            duration = 1.0E-5;
+        }
+        g2d.setColor(Color.white);
+        g2d.drawString("FPS: " + Math.round(1000/duration), 10, 10);
         g2d.dispose();
     }
 }

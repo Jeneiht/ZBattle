@@ -1,8 +1,10 @@
 package com.trongthien.zBattle.character;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class HitBox {
     private int x;
     private int y;

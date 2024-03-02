@@ -1,35 +1,47 @@
 package com.trongthien.zBattle.component;
 
 import com.trongthien.zBattle.GameMap.GameMap;
-import com.trongthien.zBattle.character.Entity;
+import com.trongthien.zBattle.character.HitBox;
 
 public class CollisionChecker {
+    //Singleton
+    private static CollisionChecker collisionChecker = new CollisionChecker();
     public GameMap gameMap;
 
-    public CollisionChecker(GameMap gameMap) {
-        this.gameMap = gameMap;
+    private CollisionChecker() {
+        gameMap = SharedContext.getInstance().getCurrentGameMap();
     }
 
-    public boolean checkCollisionTop(Entity entity) {
-        if (gameMap.isSolidTile(entity.getX() + entity.bodyHitBox.getX(), entity.getY() + entity.bodyHitBox.getY()) || gameMap.isSolidTile(entity.getX() + entity.bodyHitBox.getX() + entity.bodyHitBox.getWidth(), entity.getY() + entity.bodyHitBox.getY())) {
+    public static CollisionChecker getInstance() {
+        if (collisionChecker == null) {
+            collisionChecker = new CollisionChecker();
+        }
+        return collisionChecker;
+    }
+
+    public boolean checkCollisionTop(HitBox hitBox) {
+        if (gameMap.isSolidTile(hitBox.getX(), hitBox.getY()) || gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), hitBox.getY())) {
             return true;
         }
         return false;
     }
-    public boolean checkCollisionBottom(Entity entity) {
-        if (gameMap.isSolidTile(entity.getX() + entity.bodyHitBox.getX(), entity.getY() + entity.bodyHitBox.getY() + entity.bodyHitBox.getHeight()) || gameMap.isSolidTile(entity.getX() + entity.bodyHitBox.getX() + entity.bodyHitBox.getWidth(), entity.getY() + entity.bodyHitBox.getY() + entity.bodyHitBox.getHeight())) {
+
+    public boolean checkCollisionBottom(HitBox hitBox) {
+        if (gameMap.isSolidTile(hitBox.getX(), hitBox.getY() + hitBox.getHeight()) || gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), hitBox.getY() + hitBox.getHeight())) {
             return true;
         }
         return false;
     }
-    public boolean checkCollisionLeft(Entity entity) {
-        if (gameMap.isSolidTile(entity.getX() + entity.bodyHitBox.getX(), entity.getY() + entity.bodyHitBox.getY()) || gameMap.isSolidTile(entity.getX() + entity.bodyHitBox.getX(), entity.getY() + entity.bodyHitBox.getY() + entity.bodyHitBox.getHeight())) {
+
+    public boolean checkCollisionLeft(HitBox hitBox) {
+        if (gameMap.isSolidTile(hitBox.getX(), hitBox.getY()) || gameMap.isSolidTile(hitBox.getX(), hitBox.getY() + hitBox.getHeight())) {
             return true;
         }
         return false;
     }
-    public boolean checkCollisionRight(Entity entity) {
-        if (gameMap.isSolidTile(entity.getX() + entity.bodyHitBox.getX() + entity.bodyHitBox.getWidth(), entity.getY() + entity.bodyHitBox.getY()) || gameMap.isSolidTile(entity.getX() + entity.bodyHitBox.getX() + entity.bodyHitBox.getWidth(), entity.getY() + entity.bodyHitBox.getY() + entity.bodyHitBox.getHeight())) {
+
+    public boolean checkCollisionRight(HitBox hitBox) {
+        if (gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), hitBox.getY()) || gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), hitBox.getY() + hitBox.getHeight())) {
             return true;
         }
         return false;
