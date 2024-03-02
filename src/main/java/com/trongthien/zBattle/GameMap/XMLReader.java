@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class XMLReader {
     //singleton
@@ -25,7 +26,7 @@ public class XMLReader {
         }
         return instance;
     }
-    public ArrayList<String> readMap(String gameMapPath) {
+    public List<String> readMap(String gameMapPath) {
         ArrayList<String> layers = new ArrayList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {

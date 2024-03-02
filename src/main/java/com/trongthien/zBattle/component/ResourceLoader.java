@@ -33,19 +33,16 @@ public class ResourceLoader {
     }
 
     public BufferedImage loadImage(String path) {
-        // Check if the image is in the cache
-        if (imageCache.containsKey(path)) {
-            return imageCache.get(path);
+        BufferedImage image = imageCache.get(path);
+        if (image == null) {
+            try {
+                image = ImageIO.read(getClass().getResourceAsStream(path));
+                imageCache.put(path, image);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load image: " + path, e);
+            }
         }
-
-        // If not in the cache, load the image
-        try {
-            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(path));
-            imageCache.put(path, image); // Add the image to the cache
-            return image;
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load image: " + path, e);
-        }
+        return image;
     }
 
     // Method to preload all resources

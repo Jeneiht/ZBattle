@@ -56,18 +56,30 @@ public class MainPanel extends JPanel implements Runnable {
 
     @Override
     protected void paintComponent(Graphics g) {
-        long startTime = System.nanoTime();
         super.paintComponent(g);
+        long startTime = System.nanoTime();
         Graphics2D g2d = (Graphics2D) g;
+        //Double buffering
+        g2d.setBackground(Color.BLACK);
+        g2d.fillRect(0, 0, GameConstant.screenWidth, GameConstant.screenHeight);
         SharedContext.getInstance().getCurrentGameMap().draw(g2d, camera);
-
         long endTime = System.nanoTime();
-        double duration = (endTime - startTime) / 1000000;
-        if (duration <= 0) {
-            duration = 1.0E-5;
+        //syncFPS(endTime, startTime);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("FPS: " + (1000000000 / (System.nanoTime() - startTime)), 10, 10);
+
+
+    }
+
+    private static void syncFPS(long endTime, long startTime) {
+        long timeElapsed = endTime - startTime;
+        long sleepTime = 1000000000 / GameConstant.FPS - timeElapsed;
+        if (sleepTime > 0) {
+            try {
+                Thread.sleep(sleepTime / 1000000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        g2d.setColor(Color.white);
-        g2d.drawString("FPS: " + Math.round(1000/duration), 10, 10);
-        g2d.dispose();
     }
 }
