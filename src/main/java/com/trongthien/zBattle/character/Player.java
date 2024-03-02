@@ -1,13 +1,12 @@
 package com.trongthien.zBattle.character;
 
 import com.trongthien.zBattle.Movement.PlayerMovement;
-import com.trongthien.zBattle.Attack.Attack;
 import com.trongthien.zBattle.GameMap.Camera;
 import com.trongthien.zBattle.GameMap.Tile;
 import com.trongthien.zBattle.GameMap.TileSet;
 import com.trongthien.zBattle.UI.HealthBar;
 import com.trongthien.zBattle.component.AnimationCounter;
-import com.trongthien.zBattle.component.SharedCurrentContext;
+import com.trongthien.zBattle.component.SharedContext;
 import com.trongthien.zBattle.constant.GameConstant;
 import com.trongthien.zBattle.key.KeyHandler;
 import lombok.Getter;
@@ -124,7 +123,7 @@ public abstract class Player extends Entity {
     private void doAttack() {
         if (attacking && animationCounter.isStarting()) {
             setCurrentAttack(playerState);
-            SharedCurrentContext.getInstance().getCurrentGameMap().addAttack(currentAttack);
+            SharedContext.getInstance().getCurrentGameMap().addAttack(currentAttack);
         }
     }
 

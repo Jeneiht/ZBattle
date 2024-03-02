@@ -9,18 +9,20 @@ import javax.swing.*;
 
 @Getter
 @Setter
-public class SharedCurrentContext {
+public class SharedContext {
     //singleton
-    public static SharedCurrentContext sharedCurrentContext;
+    public static SharedContext sharedContext;
     JPanel currentPanel;
     GameMap currentGameMap;
     Player currentPlayer;
-    private SharedCurrentContext() {
+
+    private SharedContext() {
     }
-    public static SharedCurrentContext getInstance() {
-        if (sharedCurrentContext == null) {
-            sharedCurrentContext = new SharedCurrentContext();
+
+    public static SharedContext getInstance() {
+        if (sharedContext == null) {
+            sharedContext = new SharedContext();
         }
-        return sharedCurrentContext;
+        return sharedContext;
     }
 }

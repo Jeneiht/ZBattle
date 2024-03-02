@@ -3,10 +3,8 @@ package com.trongthien.zBattle.Movement;
 import com.trongthien.zBattle.character.Direction;
 import com.trongthien.zBattle.character.Entity;
 import com.trongthien.zBattle.component.CollisionChecker;
-import com.trongthien.zBattle.component.SharedCurrentContext;
+import com.trongthien.zBattle.component.SharedContext;
 import com.trongthien.zBattle.constant.GameConstant;
-
-import java.sql.SQLOutput;
 
 public class LocalPathFindingMovement implements Movement {
     private int goalX;
@@ -14,7 +12,7 @@ public class LocalPathFindingMovement implements Movement {
 
     @Override
     public void move(Entity entity) {
-        setGoal(SharedCurrentContext.getInstance().getCurrentPlayer());
+        setGoal(SharedContext.getInstance().getCurrentPlayer());
         int speed = entity.getSpeed();
         int x = (entity.getX()+entity.getWidth())/2;
         int y = (entity.getY()+entity.getHeight())/2;

@@ -5,7 +5,7 @@ import com.trongthien.zBattle.character.Direction;
 import com.trongthien.zBattle.character.Entity;
 import com.trongthien.zBattle.character.Player;
 import com.trongthien.zBattle.component.CollisionChecker;
-import com.trongthien.zBattle.component.SharedCurrentContext;
+import com.trongthien.zBattle.component.SharedContext;
 import com.trongthien.zBattle.constant.GameConstant;
 
 import java.util.Queue;
@@ -16,8 +16,8 @@ public class BFSPathFindingMovement implements Movement {
 
     @Override
     public void move(Entity entity) {
-        Player player = SharedCurrentContext.getInstance().getCurrentPlayer();
-        GameMap gameMap = SharedCurrentContext.getInstance().getCurrentGameMap();
+        Player player = SharedContext.getInstance().getCurrentPlayer();
+        GameMap gameMap = SharedContext.getInstance().getCurrentGameMap();
         Node nodes[][] = new Node[gameMap.getMaxRow()][gameMap.getMaxCol()];
         for (int i = 0; i < gameMap.getMaxRow(); i++) {
             for (int j = 0; j < gameMap.getMaxCol(); j++) {
