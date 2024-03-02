@@ -1,12 +1,6 @@
 package com.trongthien.zBattle.GameMap;
 
 
-import com.trongthien.zBattle.character.Enemy;
-import com.trongthien.zBattle.character.Scorpion1;
-import com.trongthien.zBattle.component.SharedCurrentContext;
-
-import java.awt.*;
-
 public class World extends GameMap {
     public World() {
         super();

@@ -1,13 +1,10 @@
 package com.trongthien.zBattle.GameMap;
 
 import com.trongthien.zBattle.Attack.Attack;
-import com.trongthien.zBattle.character.Enemy;
 import com.trongthien.zBattle.character.Entity;
-import com.trongthien.zBattle.character.HitBox;
-import com.trongthien.zBattle.character.Scorpion1;
 import com.trongthien.zBattle.component.HitBoxUtils;
 import com.trongthien.zBattle.component.ResourceLoader;
-import com.trongthien.zBattle.component.SharedCurrentContext;
+import com.trongthien.zBattle.component.SharedContext;
 import com.trongthien.zBattle.constant.GameConstant;
 import lombok.Getter;
 
@@ -38,7 +35,7 @@ public abstract class GameMap {
     public GameMap() {
         entities = new ArrayList<>();
         attacks = new ArrayList<>();
-        addEntity(SharedCurrentContext.getInstance().getCurrentPlayer());
+        addEntity(SharedContext.getInstance().getCurrentPlayer());
         setGameMapPath();
         setTileSetPath();
         setSolidTilesPath();
@@ -76,8 +73,8 @@ public abstract class GameMap {
     public abstract void loadEntities();
 
     private void spawnPlayer() {
-        SharedCurrentContext.getInstance().getCurrentPlayer().setX(spawnX);
-        SharedCurrentContext.getInstance().getCurrentPlayer().setY(spawnY);
+        SharedContext.getInstance().getCurrentPlayer().setX(spawnX);
+        SharedContext.getInstance().getCurrentPlayer().setY(spawnY);
     }
 
     protected void load() {
@@ -93,9 +90,9 @@ public abstract class GameMap {
             }
         }
         for (int i = 0; i < layers.size(); i++) {
-            String lines[] = layers.get(i).split("\\s+");
+            String[] lines = layers.get(i).split("\\s+");
             for (int x = 0; x < maxRow; x++) {
-                String nums[] = lines[x + 1].split(",");
+                String[] nums = lines[x + 1].split(",");
                 for (int y = 0; y < maxCol; y++) {
                     int id = Integer.parseInt(nums[y]);
                     tiles.get(i).get(x).set(y, getTile(id));
@@ -132,9 +129,10 @@ public abstract class GameMap {
     }
 
     private Tile getTile(int id) {
-        if(id>0){
+        if (id > 0) {
             id--;
         }
+        if (id == 0) return null;
         int x = id % tileSet.getMaxCol();
         int y = id / tileSet.getMaxRow();
         return new Tile(tileSet, x, y, tileSize, tileSize);
@@ -208,16 +206,23 @@ public abstract class GameMap {
         return false;
     }
 
+
     public void draw(Graphics2D g2d, Camera camera) {
+        drawWorld(g2d, camera);
+        drawEntities(g2d, camera);
+    }
+
+    private void drawWorld(Graphics2D g2d, Camera camera) {
         int startRow = camera.getY() / tileSize;
         int startCol = camera.getX() / tileSize;
-        for (int i = 0; i < tiles.size(); i++) {
-            for (int x = startRow; x <= startRow + GameConstant.maxScreenRow && x < maxRow; x++) {
-                for (int y = startCol; y <= startCol + GameConstant.maxScreenCol && y < maxCol; y++) {
-                    g2d.drawImage(tiles.get(i).get(x).get(y).getImage(), y * tileSize - camera.getX(), x * tileSize - camera.getY(), null);
+        for (ArrayList<ArrayList<Tile>> tile : tiles) {
+            for (int x = startRow; x <= startRow + GameConstant.maxScreenRow && x < maxRow; ++x) {
+                for (int y = startCol; y <= startCol + GameConstant.maxScreenCol && y < maxCol; ++y) {
+                    if (tile.get(x).get(y) != null) {
+                        g2d.drawImage(tile.get(x).get(y).getImage(), y * tileSize - camera.getX(), x * tileSize - camera.getY(), null);
+                    }
                 }
             }
         }
-        drawEntities(g2d, camera);
     }
 }
