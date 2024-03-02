@@ -25,9 +25,7 @@ public abstract class Player extends Entity {
     protected PlayerState playerState;
     //state: idle, walk, run, attackA, attackB, attackC, idleDrawn, walkDrawn, hurtDrawn, sheath
     protected String playerTileSetPath;
-    protected int runSpeed;
-    protected int walkSpeed;
-    protected int idleSpeed;
+    protected float runSpeed, walkSpeed, idleSpeed;
     private boolean playerStateBlocked;
     protected TileSet playerTileSet;
     protected int tileX, tileY;
@@ -142,6 +140,6 @@ public abstract class Player extends Entity {
         Tile tile = new Tile(playerTileSet, tileX, tileY, width, height);
         TextureRegion heroImage = tile.getTextureRegion();
         spriteBatch.draw(heroImage, x - camera.getX(), y - camera.getY());
-        //healthBar.draw(spriteBatch, 20, 20, 200, 20);
+        healthBar.draw(spriteBatch, 20, 20, 200, 20);
     }
 }

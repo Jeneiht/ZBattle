@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class HitBox {
-    private int x;
-    private int y;
+    private float x;
+    private float y;
     private int width;
     private int height;
 

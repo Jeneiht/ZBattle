@@ -1,9 +1,15 @@
 package com.trongthien.zbattle.view.map.impl;
 
 
+import com.trongthien.zbattle.common.constant.GameConstant;
+import com.trongthien.zbattle.model.Scorpion1;
 import com.trongthien.zbattle.view.map.GameMap;
 
 public class ForestMap extends GameMap {
+
+    private static final int SPAWN_X = 304;
+    private static final int SPAWN_Y = 116;
+
     public ForestMap() {
         super();
     }
@@ -20,7 +26,7 @@ public class ForestMap extends GameMap {
 
     @Override
     protected void setTileSize() {
-        tileSize = 16;
+        tileSize = GameConstant.tileSize;
     }
 
     @Override
@@ -40,19 +46,19 @@ public class ForestMap extends GameMap {
 
     @Override
     protected void setSpawnX() {
-        spawnX = 50;
+        spawnX = SPAWN_X;
     }
 
     @Override
     protected void setSpawnY() {
-        spawnY = 50;
+        spawnY = SPAWN_Y;
     }
 
     @Override
     public void loadEntities() {
-//        addEntity(new Scorpion1(100, 100));
-//        addEntity(new Scorpion1(100, 200));
-//        addEntity(new Scorpion1(100, 300));
+        addEntity(new Scorpion1(100, 300));
+        addEntity(new Scorpion1(100, 400));
+        addEntity(new Scorpion1(100, 500));
     }
 
 }

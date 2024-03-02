@@ -13,14 +13,20 @@ public class Hero extends Player {
         super();
     }
 
+    private static final float RUN_SPEED = 4;
+    private static final float WALK_SPEED = 2;
+    private static final float IDLE_SPEED = 0;
+    private static final int MAX_HEALTH = 100;
+
+
     @Override
     public HitBox getHitBox() {
-        return new HitBox(x+24,y+32,16,16);
+        return new HitBox(Math.round(x + 24), Math.round(y + 32), 16, 16);
     }
 
     @Override
     protected void setHealth() {
-        health = 100;
+        health = MAX_HEALTH;
     }
 
     @Override
@@ -30,17 +36,17 @@ public class Hero extends Player {
 
     @Override
     protected void setRunSpeed() {
-        runSpeed = 4;
+        runSpeed = RUN_SPEED;
     }
 
     @Override
     protected void setWalkSpeed() {
-        walkSpeed = 2;
+        walkSpeed = WALK_SPEED;
     }
 
     @Override
     protected void setIdleSpeed() {
-        idleSpeed = 0;
+        idleSpeed = IDLE_SPEED;
     }
 
     @Override
@@ -55,12 +61,13 @@ public class Hero extends Player {
 
     @Override
     protected void setCurrentAttack(PlayerState playerState) {
-        switch (playerState){
+        switch (playerState) {
             case ATTACKA:
                 currentAttack = new NormalSword(this);
                 break;
         }
     }
+
     @Override
     protected void loadFrameInfo() {
         //init mapTileY

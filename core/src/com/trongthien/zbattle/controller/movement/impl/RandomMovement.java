@@ -5,12 +5,13 @@ import com.trongthien.zbattle.model.Entity;
 import com.trongthien.zbattle.controller.movement.Movement;
 import com.trongthien.zbattle.controller.CollisionChecker;
 import com.trongthien.zbattle.common.constant.GameConstant;
+import lombok.var;
 
 public class RandomMovement implements Movement {
     @Override
     public void move(Entity entity) {
         boolean isCollision = false;
-        int speed = entity.getSpeed();
+        var speed = entity.getSpeed() / GameConstant.speedMultiplier;
         Direction direction = entity.getDirection();
         switch (direction) {
             case UP:

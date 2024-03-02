@@ -26,8 +26,18 @@ public class BFSPathFindingMovement implements Movement {
                 nodes[i][j] = new Node(j, i);
             }
         }
-        start = nodes[(entity.getHitBox().getY() + entity.getHitBox().getHeight() / 2) / gameMap.getTileSize()][(entity.getHitBox().getX() + entity.getHitBox().getWidth() / 2) / gameMap.getTileSize()];
-        goal = nodes[(player.getHitBox().getY() + player.getHitBox().getHeight() / 2) / gameMap.getTileSize()][(player.getHitBox().getX() + player.getHitBox().getWidth() / 2) / gameMap.getTileSize()];
+        float entityCenterY = entity.getHitBox().getY() + entity.getHitBox().getHeight() / 2;
+        float entityCenterX = entity.getHitBox().getX() + entity.getHitBox().getWidth() / 2;
+        int entityTileY = Math.round(entityCenterY / gameMap.getTileSize());
+        int entityTileX = Math.round(entityCenterX / gameMap.getTileSize());
+
+        float playerCenterY = player.getHitBox().getY() + player.getHitBox().getHeight() / 2;
+        float playerCenterX = player.getHitBox().getX() + player.getHitBox().getWidth() / 2;
+        int playerTileY = Math.round(playerCenterY / gameMap.getTileSize());
+        int playerTileX = Math.round(playerCenterX / gameMap.getTileSize());
+
+        start = nodes[entityTileY][entityTileX];
+        goal = nodes[playerTileY][playerTileX];
         if (start.equals(goal)) {
             Movement movement = new LocalPathFindingMovement();
             movement.move(entity);
@@ -83,7 +93,7 @@ public class BFSPathFindingMovement implements Movement {
             direction = Direction.UP_LEFT;
         }
         entity.setDirection(direction);
-        int speed = entity.getSpeed();
+        float speed = entity.getSpeed() / GameConstant.speedMultiplier;
         switch (direction) {
             case UP:
                 entity.setY(entity.getY() - speed);
@@ -92,7 +102,6 @@ public class BFSPathFindingMovement implements Movement {
                 }
                 break;
             case DOWN:
-                entity.setY(entity.getY() + speed);
                 while (CollisionChecker.getInstance().checkCollisionBottom(entity.getHitBox())) {
                     entity.setY(entity.getY() - GameConstant.minSpeed);
                 }

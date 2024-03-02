@@ -21,8 +21,9 @@ public abstract class Entity {
     protected int defense;
     protected Movement currentMovement;
     protected CollisionChecker collisionChecker;
-    protected int x, y, width, height;
-    protected int speed;
+    protected float x, y;
+    protected  int width, height;
+    protected float speed;
     protected Direction direction;
     //direction: up, down, left, right, up_left, up_right, down_left, down_right
     public abstract HitBox getHitBox();

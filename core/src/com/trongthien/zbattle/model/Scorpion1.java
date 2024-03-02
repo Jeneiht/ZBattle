@@ -15,7 +15,7 @@ public class Scorpion1 extends Enemy {
 
     @Override
     public HitBox getHitBox() {
-        return new HitBox(x, y, 32, 32);
+        return new HitBox(Math.round(x),Math.round(y),32,32);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Scorpion1 extends Enemy {
 
     @Override
     protected void setEnemyTileSetPath() {
-        enemyTileSetPath = "/character/hero/scorpian1_tiles.png";
+        enemyTileSetPath = "character/hero/scorpian1_tiles.png";
     }
 
     @Override

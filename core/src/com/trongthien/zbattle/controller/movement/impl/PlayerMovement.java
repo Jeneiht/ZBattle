@@ -6,11 +6,12 @@ import com.trongthien.zbattle.controller.movement.Movement;
 import com.trongthien.zbattle.controller.CollisionChecker;
 import com.trongthien.zbattle.common.constant.GameConstant;
 import com.trongthien.zbattle.common.io.KeyHandler;
+import lombok.var;
 
 public class PlayerMovement implements Movement {
     @Override
     public void move(Entity entity) {
-        int speed = entity.getSpeed();
+        var speed = entity.getSpeed()/ GameConstant.speedMultiplier;
         Direction direction = entity.getDirection();
         if (KeyHandler.getInstance().isUp()) {
             direction = Direction.UP;

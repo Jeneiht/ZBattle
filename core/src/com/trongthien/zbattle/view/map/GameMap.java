@@ -131,6 +131,7 @@ public abstract class GameMap {
             id--;
         }
         if (id == 0) return null;
+        id %= tileSet.getMaxCol() * tileSet.getMaxRow();
         int x = id % tileSet.getMaxCol();
         int y = id / tileSet.getMaxRow();
         return new Tile(tileSet, x, y, tileSize, tileSize);
@@ -191,9 +192,9 @@ public abstract class GameMap {
         }
     }
 
-    public boolean isSolidTile(int x, int y) {
-        int row = y / tileSize;
-        int col = x / tileSize;
+    public boolean isSolidTile(float x, float y) {
+        int row = Math.round(y / tileSize);
+        int col = Math.round(x / tileSize);
         //return tiles[row][col].isSolid();
         return false;
     }
@@ -205,8 +206,8 @@ public abstract class GameMap {
     }
 
     private void drawWorld(SpriteBatch spriteBatch, Camera camera) {
-        int startRow = camera.getY() / tileSize;
-        int startCol = camera.getX() / tileSize;
+        int startRow = Math.round(camera.getY() / tileSize);
+        int startCol = Math.round(camera.getX() / tileSize);
         for (ArrayList<ArrayList<Tile>> tile : tiles) {
             for (int x = startRow; x <= startRow + GameConstant.maxScreenRow && x < maxRow; ++x) {
                 for (int y = startCol; y <= startCol + GameConstant.maxScreenCol && y < maxCol; ++y) {
