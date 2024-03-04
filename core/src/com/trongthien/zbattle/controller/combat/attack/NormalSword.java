@@ -11,8 +11,8 @@ public class NormalSword extends Attack {
     @Override
     public HitBox getHitBox() {
         Direction direction = Direction.force(owner.getDirection());
-        float ownerX=owner.getX();
-        float ownerY=owner.getY();
+        int ownerX=owner.getX();
+        int ownerY=owner.getY();
         HitBox hitBox=new HitBox(0,0,0,0);
         switch (direction){
             case DOWN:

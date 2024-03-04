@@ -13,15 +13,15 @@ public class Hero extends Player {
         super();
     }
 
-    private static final float RUN_SPEED = 4;
-    private static final float WALK_SPEED = 2;
-    private static final float IDLE_SPEED = 0;
+    private static final int RUN_SPEED = 4;
+    private static final int WALK_SPEED = 2;
+    private static final int IDLE_SPEED = 0;
     private static final int MAX_HEALTH = 100;
 
 
     @Override
     public HitBox getHitBox() {
-        return new HitBox(Math.round(x + 24), Math.round(y + 32), 16, 16);
+        return new HitBox(x + 24, y + 32, 16, 16);
     }
 
     @Override

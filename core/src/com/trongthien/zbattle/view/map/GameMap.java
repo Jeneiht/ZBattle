@@ -5,7 +5,6 @@ import com.trongthien.zbattle.controller.combat.attack.Attack;
 import com.trongthien.zbattle.common.io.XMLReader;
 import com.trongthien.zbattle.model.Entity;
 import com.trongthien.zbattle.controller.combat.hitbox.HitBoxUtils;
-import com.trongthien.zbattle.common.io.ResourceLoader;
 import com.trongthien.zbattle.common.SharedContext;
 import com.trongthien.zbattle.common.constant.GameConstant;
 import lombok.Getter;
@@ -19,7 +18,9 @@ public abstract class GameMap {
     protected int tileSize;
     protected int width;
     protected int height;
+    protected int numberOfLayers;
     protected ArrayList<ArrayList<ArrayList<Tile>>> tiles;
+
     protected String tileSetPath;
     protected String gameMapPath;
     protected String solidTilesPath;
@@ -46,8 +47,6 @@ public abstract class GameMap {
         width = maxCol * tileSize;
         height = maxRow * tileSize;
         tileSet = new TileSet(tileSetPath, tileSize);
-        System.out.println("tileSet.getMaxCol() = " + tileSet.getMaxCol());
-        System.out.println("tileSet.getMaxRow() = " + tileSet.getMaxRow());
         load();
         loadEntities();
     }
@@ -77,6 +76,7 @@ public abstract class GameMap {
 
     protected void load() {
         List<String> layers = XMLReader.getInstance().readMap(gameMapPath);
+        numberOfLayers = layers.size();
         tiles = new ArrayList<>(layers.size());
         for (int i = 0; i < layers.size(); i++) {
             tiles.add(new ArrayList<>(maxRow));
@@ -97,7 +97,6 @@ public abstract class GameMap {
                 }
             }
         }
-        //loadSolidTiles();
     }
 
     public void addEntity(Entity entity) {
@@ -116,21 +115,13 @@ public abstract class GameMap {
         attacks.remove(attack);
     }
 
-    private void loadSolidTiles() {
-        Set<Integer> solidTiles = new HashSet<>();
-        Scanner scanner = new Scanner(ResourceLoader.getInstance().loadInputStream(solidTilesPath));
-        String line = scanner.nextLine();
-        for (String num : line.split(",")) {
-            solidTiles.add(Integer.parseInt(num));
-        }
-        scanner.close();
-    }
 
     private Tile getTile(int id) {
         if (id > 0) {
             id--;
+        }else{
+            return null;
         }
-        if (id == 0) return null;
         id %= tileSet.getMaxCol() * tileSet.getMaxRow();
         int x = id % tileSet.getMaxCol();
         int y = id / tileSet.getMaxRow();
@@ -195,8 +186,10 @@ public abstract class GameMap {
     public boolean isSolidTile(float x, float y) {
         int row = Math.round(y / tileSize);
         int col = Math.round(x / tileSize);
-        //return tiles[row][col].isSolid();
-        return false;
+        if (row < 0 || col < 0 || row >= maxRow || col >= maxCol) {
+            return true;
+        }
+        return tiles.get(0).get(row).get(col) != null;
     }
 
 
@@ -206,8 +199,8 @@ public abstract class GameMap {
     }
 
     private void drawWorld(SpriteBatch spriteBatch, Camera camera) {
-        int startRow = Math.round(camera.getY() / tileSize);
-        int startCol = Math.round(camera.getX() / tileSize);
+        int startRow = camera.getY() / tileSize;
+        int startCol = camera.getX() / tileSize;
         for (ArrayList<ArrayList<Tile>> tile : tiles) {
             for (int x = startRow; x <= startRow + GameConstant.maxScreenRow && x < maxRow; ++x) {
                 for (int y = startCol; y <= startCol + GameConstant.maxScreenCol && y < maxCol; ++y) {
@@ -217,6 +210,15 @@ public abstract class GameMap {
                 }
             }
         }
+        //draw layer0
+        for(int i = 0; i < maxRow; i++){
+            for(int j = 0; j < maxCol; j++){
+                if(tiles.get(0).get(i).get(j) != null){
+                    spriteBatch.draw(tiles.get(0).get(i).get(j).getTextureRegion(), j * tileSize - camera.getX(), i * tileSize - camera.getY());
+                }
+            }
+        }
+
     }
 
     private void drawEntities(SpriteBatch spriteBatch, Camera camera) {

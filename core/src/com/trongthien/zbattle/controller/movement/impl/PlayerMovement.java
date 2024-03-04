@@ -11,7 +11,7 @@ import lombok.var;
 public class PlayerMovement implements Movement {
     @Override
     public void move(Entity entity) {
-        var speed = entity.getSpeed()/ GameConstant.speedMultiplier;
+        int speed = entity.getSpeed();
         Direction direction = entity.getDirection();
         if (KeyHandler.getInstance().isUp()) {
             direction = Direction.UP;

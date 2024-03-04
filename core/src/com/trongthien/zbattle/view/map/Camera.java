@@ -11,7 +11,7 @@ import lombok.Setter;
 public class Camera {
     private Player player;
     private GameMap gameMap;
-    private float x, y;
+    private int x, y;
 
     public Camera(Player player, GameMap gameMap) {
         this.player = player;

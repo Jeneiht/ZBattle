@@ -13,7 +13,6 @@ import java.util.Map;
 public class Tile {
     private static Map<TileSet, Map<Point, Tile>> tileCache = new HashMap<>();
     private TextureRegion textureRegion;
-    public boolean solid = false;
 
     public Tile(TextureRegion textureRegion) {
         this.textureRegion = textureRegion;

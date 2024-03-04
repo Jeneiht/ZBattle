@@ -31,12 +31,12 @@ public class ForestMap extends GameMap {
 
     @Override
     protected void setGameMapPath() {
-        gameMapPath = "map/lmao.xml";
+        gameMapPath = "assets/map/lmao.xml";
     }
 
     @Override
     protected void setSolidTilesPath() {
-        solidTilesPath = "map/solid_tiles.txt";
+        solidTilesPath = "assets/map/lmaoSolidTiles.xml";
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.trongthien.zbattle.model;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.trongthien.zbattle.controller.movement.Direction;
 import com.trongthien.zbattle.model.constant.PlayerState;
 import com.trongthien.zbattle.view.map.Camera;
@@ -25,7 +29,7 @@ public abstract class Player extends Entity {
     protected PlayerState playerState;
     //state: idle, walk, run, attackA, attackB, attackC, idleDrawn, walkDrawn, hurtDrawn, sheath
     protected String playerTileSetPath;
-    protected float runSpeed, walkSpeed, idleSpeed;
+    protected int runSpeed, walkSpeed, idleSpeed;
     private boolean playerStateBlocked;
     protected TileSet playerTileSet;
     protected int tileX, tileY;
@@ -141,5 +145,6 @@ public abstract class Player extends Entity {
         TextureRegion heroImage = tile.getTextureRegion();
         spriteBatch.draw(heroImage, x - camera.getX(), y - camera.getY());
         healthBar.draw(spriteBatch, 20, 20, 200, 20);
+        spriteBatch.draw(SharedContext.getInstance().getCurrentGameMap().getTiles().get(0).get(0).get(11).getTextureRegion(),getHitBox().getX()-camera.getX(), getHitBox().getY()-camera.getY());
     }
 }

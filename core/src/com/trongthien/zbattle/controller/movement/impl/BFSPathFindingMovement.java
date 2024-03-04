@@ -26,15 +26,15 @@ public class BFSPathFindingMovement implements Movement {
                 nodes[i][j] = new Node(j, i);
             }
         }
-        float entityCenterY = entity.getHitBox().getY() + entity.getHitBox().getHeight() / 2;
-        float entityCenterX = entity.getHitBox().getX() + entity.getHitBox().getWidth() / 2;
-        int entityTileY = Math.round(entityCenterY / gameMap.getTileSize());
-        int entityTileX = Math.round(entityCenterX / gameMap.getTileSize());
+        int entityCenterY = entity.getHitBox().getY() + entity.getHitBox().getHeight() / 2;
+        int entityCenterX = entity.getHitBox().getX() + entity.getHitBox().getWidth() / 2;
+        int entityTileY = entityCenterY / gameMap.getTileSize();
+        int entityTileX = entityCenterX / gameMap.getTileSize();
 
-        float playerCenterY = player.getHitBox().getY() + player.getHitBox().getHeight() / 2;
-        float playerCenterX = player.getHitBox().getX() + player.getHitBox().getWidth() / 2;
-        int playerTileY = Math.round(playerCenterY / gameMap.getTileSize());
-        int playerTileX = Math.round(playerCenterX / gameMap.getTileSize());
+        int playerCenterY = player.getHitBox().getY() + player.getHitBox().getHeight() / 2;
+        int playerCenterX = player.getHitBox().getX() + player.getHitBox().getWidth() / 2;
+        int playerTileY = playerCenterY / gameMap.getTileSize();
+        int playerTileX = playerCenterX / gameMap.getTileSize();
 
         start = nodes[entityTileY][entityTileX];
         goal = nodes[playerTileY][playerTileX];
@@ -55,7 +55,8 @@ public class BFSPathFindingMovement implements Movement {
                 for (int j = -1; j <= 1; j++) {
                     int x = current.getX() + i;
                     int y = current.getY() + j;
-                    if (x >= 0 && x < gameMap.getMaxCol() && y >= 0 && y < gameMap.getMaxRow() && !gameMap.getTiles().get(0).get(y).get(x).isSolid()) {
+                    if (x >= 0 && x < gameMap.getMaxCol() && y >= 0 && y < gameMap.getMaxRow()
+                            && !gameMap.isSolidTile(y*gameMap.getTileSize(), x*gameMap.getTileSize())) {
                         Node neighbor = nodes[y][x];
                         if (neighbor.getParent() == null && !neighbor.equals(current)) {
                             neighbor.setParent(current);
@@ -93,7 +94,7 @@ public class BFSPathFindingMovement implements Movement {
             direction = Direction.UP_LEFT;
         }
         entity.setDirection(direction);
-        float speed = entity.getSpeed() / GameConstant.speedMultiplier;
+        int speed = entity.getSpeed();
         switch (direction) {
             case UP:
                 entity.setY(entity.getY() - speed);

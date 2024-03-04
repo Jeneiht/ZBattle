@@ -13,9 +13,9 @@ public class LocalPathFindingMovement implements Movement {
     @Override
     public void move(Entity entity) {
         setGoal(SharedContext.getInstance().getCurrentPlayer());
-        float speed = entity.getSpeed() / GameConstant.speedMultiplier;
-        float x = (entity.getX() + entity.getWidth()) / 2;
-        float y = (entity.getY() + entity.getHeight()) / 2;
+        int speed = entity.getSpeed();
+        int x = (entity.getX() + entity.getWidth()) / 2;
+        int y = (entity.getY() + entity.getHeight()) / 2;
         if (x == goalX && y == goalY) {
             return;
         }

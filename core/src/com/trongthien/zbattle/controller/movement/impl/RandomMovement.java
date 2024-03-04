@@ -11,7 +11,7 @@ public class RandomMovement implements Movement {
     @Override
     public void move(Entity entity) {
         boolean isCollision = false;
-        var speed = entity.getSpeed() / GameConstant.speedMultiplier;
+        int speed = entity.getSpeed();
         Direction direction = entity.getDirection();
         switch (direction) {
             case UP:
