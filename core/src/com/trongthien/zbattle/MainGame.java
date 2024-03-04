@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.trongthien.zbattle.common.constant.GameConstant;
+import com.trongthien.zbattle.model.Hero2;
 import com.trongthien.zbattle.view.CustomDrawer;
 import com.trongthien.zbattle.view.map.Camera;
 import com.trongthien.zbattle.view.map.impl.ForestMap;
@@ -24,7 +25,7 @@ public class MainGame extends ApplicationAdapter {
     public void create() {
         batch = new CustomDrawer();
         Gdx.input.setInputProcessor(KeyHandler.getInstance());
-        SharedContext.getInstance().setCurrentPlayer(new Hero());
+        SharedContext.getInstance().setCurrentPlayer(new Hero2());
         SharedContext.getInstance().setCurrentGameMap(new ForestMap());
         frameRate = new FrameRate();
         frameRate.update();

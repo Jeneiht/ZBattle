@@ -145,6 +145,5 @@ public abstract class Player extends Entity {
         TextureRegion heroImage = tile.getTextureRegion();
         spriteBatch.draw(heroImage, x - camera.getX(), y - camera.getY());
         healthBar.draw(spriteBatch, 20, 20, 200, 20);
-        spriteBatch.draw(SharedContext.getInstance().getCurrentGameMap().getTiles().get(0).get(0).get(11).getTextureRegion(),getHitBox().getX()-camera.getX(), getHitBox().getY()-camera.getY());
     }
 }
