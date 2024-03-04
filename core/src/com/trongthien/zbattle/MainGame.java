@@ -23,7 +23,7 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        batch = new CustomDrawer();
+        batch = new SpriteBatch();
         Gdx.input.setInputProcessor(KeyHandler.getInstance());
         SharedContext.getInstance().setCurrentPlayer(new Hero2());
         SharedContext.getInstance().setCurrentGameMap(new ForestMap());
@@ -36,11 +36,9 @@ public class MainGame extends ApplicationAdapter {
     @Override
     public void render() {
         batch.begin();
-
         update();
         SharedContext.getInstance().getCurrentGameMap().draw(batch, camera);
         frameRate.render();
-
         batch.end();
     }
 
@@ -55,6 +53,5 @@ public class MainGame extends ApplicationAdapter {
         frameRate.update();
         SharedContext.getInstance().getCurrentGameMap().update();
         camera.update();
-
     }
 }

@@ -21,18 +21,38 @@ public class CollisionChecker {
     }
 
     public boolean checkCollisionTop(HitBox hitBox) {
-        return gameMap.isSolidTile(hitBox.getX(), hitBox.getY()) || gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), hitBox.getY());
+        for (int i = hitBox.getX(); i <= hitBox.getX() + hitBox.getWidth(); i++) {
+            if (gameMap.isSolidTile(i, hitBox.getY() + hitBox.getHeight())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean checkCollisionBottom(HitBox hitBox) {
-        return gameMap.isSolidTile(hitBox.getX(), hitBox.getY() + hitBox.getHeight()) || gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), hitBox.getY() + hitBox.getHeight());
+        for (int i = hitBox.getX(); i <= hitBox.getX() + hitBox.getWidth(); i++) {
+            if (gameMap.isSolidTile(i, hitBox.getY())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean checkCollisionLeft(HitBox hitBox) {
-        return gameMap.isSolidTile(hitBox.getX(), hitBox.getY()) || gameMap.isSolidTile(hitBox.getX(), hitBox.getY() + hitBox.getHeight());
+        for (int i = hitBox.getY(); i <= hitBox.getY() + hitBox.getHeight(); i++) {
+            if (gameMap.isSolidTile(hitBox.getX(), i)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean checkCollisionRight(HitBox hitBox) {
-        return gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), hitBox.getY()) || gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), hitBox.getY() + hitBox.getHeight());
+        for (int i = hitBox.getY(); i <= hitBox.getY() + hitBox.getHeight(); i++) {
+            if (gameMap.isSolidTile(hitBox.getX() + hitBox.getWidth(), i)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

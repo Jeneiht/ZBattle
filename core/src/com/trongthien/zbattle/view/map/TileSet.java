@@ -22,7 +22,6 @@ public class TileSet {
         texture = loadImage(path);
         maxCol = texture.getWidth() / tileSize;
         maxRow = texture.getHeight() / tileSize;
-
     }
 
     private Texture loadImage(String path) {

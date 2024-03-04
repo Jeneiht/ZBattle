@@ -13,7 +13,7 @@ public class Hero2 extends Player  {
     }
     @Override
     public HitBox getHitBox() {
-        return new HitBox(x+10,y+22,9,9);
+        return new HitBox(x+10,y+1,9,9);
     }
 
     @Override

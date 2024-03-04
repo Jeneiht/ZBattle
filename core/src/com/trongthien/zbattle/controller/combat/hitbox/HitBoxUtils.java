@@ -42,6 +42,30 @@ public class HitBoxUtils {
                 hitBox1.getY() + hitBox1.getHeight() <= hitBox2.getY() + hitBox2.getHeight()) {
             return true;
         }
+        if(hitBox2.getX() >= hitBox1.getX() &&
+                hitBox2.getX() <= hitBox1.getX() + hitBox1.getWidth() &&
+                hitBox2.getY() >= hitBox1.getY() &&
+                hitBox2.getY() <= hitBox1.getY() + hitBox1.getHeight()) {
+            return true;
+        }
+        if(hitBox2.getX() + hitBox2.getWidth() >= hitBox1.getX() &&
+                hitBox2.getX() + hitBox2.getWidth() <= hitBox1.getX() + hitBox1.getWidth() &&
+                hitBox2.getY() >= hitBox1.getY() &&
+                hitBox2.getY() <= hitBox1.getY() + hitBox1.getHeight()) {
+            return true;
+        }
+        if(hitBox2.getX() >= hitBox1.getX() &&
+                hitBox2.getX() <= hitBox1.getX() + hitBox1.getWidth() &&
+                hitBox2.getY() + hitBox2.getHeight() >= hitBox1.getY() &&
+                hitBox2.getY() + hitBox2.getHeight() <= hitBox1.getY() + hitBox1.getHeight()) {
+            return true;
+        }
+        if(hitBox2.getX() + hitBox2.getWidth() >= hitBox1.getX() &&
+                hitBox2.getX() + hitBox2.getWidth() <= hitBox1.getX() + hitBox1.getWidth() &&
+                hitBox2.getY() + hitBox2.getHeight() >= hitBox1.getY() &&
+                hitBox2.getY() + hitBox2.getHeight() <= hitBox1.getY() + hitBox1.getHeight()) {
+            return true;
+        }
         return false;
     }
 }

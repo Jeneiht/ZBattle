@@ -7,11 +7,16 @@ import com.trongthien.zbattle.view.map.GameMap;
 
 public class ForestMap extends GameMap {
 
-    private static final int SPAWN_X = 304;
-    private static final int SPAWN_Y = 116;
+    private static final int SPAWN_X = 322;
+    private static final int SPAWN_Y = 793;
 
     public ForestMap() {
         super();
+    }
+
+    @Override
+    protected void setCoverTilesPath() {
+        coverTilesPath = "assets/map/lmaoCoverTiles.xml";
     }
 
     @Override
@@ -34,10 +39,6 @@ public class ForestMap extends GameMap {
         gameMapPath = "assets/map/lmao.xml";
     }
 
-    @Override
-    protected void setSolidTilesPath() {
-        solidTilesPath = "assets/map/lmaoSolidTiles.xml";
-    }
 
     @Override
     protected void setTileSetPath() {

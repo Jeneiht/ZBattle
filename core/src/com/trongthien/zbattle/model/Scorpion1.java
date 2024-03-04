@@ -4,6 +4,7 @@ import com.trongthien.zbattle.controller.combat.attack.ScorpionAttack;
 import com.trongthien.zbattle.controller.combat.hitbox.HitBox;
 import com.trongthien.zbattle.controller.movement.Direction;
 import com.trongthien.zbattle.controller.movement.impl.BFSPathFindingMovement;
+import com.trongthien.zbattle.controller.movement.impl.LocalPathFindingMovement;
 import com.trongthien.zbattle.model.constant.EnemyState;
 
 import java.util.Map;
@@ -15,7 +16,7 @@ public class Scorpion1 extends Enemy {
 
     @Override
     public HitBox getHitBox() {
-        return new HitBox(Math.round(x),Math.round(y),32,32);
+        return new HitBox(x,y,5,5);
     }
 
     @Override

@@ -13,17 +13,15 @@ import com.trongthien.zbattle.common.constant.GameConstant;
 import java.util.Queue;
 
 public class BFSPathFindingMovement implements Movement {
-    private Node start;
-    private Node goal;
 
     @Override
     public void move(Entity entity) {
         Player player = SharedContext.getInstance().getCurrentPlayer();
         GameMap gameMap = SharedContext.getInstance().getCurrentGameMap();
-        Node nodes[][] = new Node[gameMap.getMaxRow()][gameMap.getMaxCol()];
+        Node[][] nodes = new Node[gameMap.getMaxRow()][gameMap.getMaxCol()];
         for (int i = 0; i < gameMap.getMaxRow(); i++) {
             for (int j = 0; j < gameMap.getMaxCol(); j++) {
-                nodes[i][j] = new Node(j, i);
+                nodes[i][j] = new Node(i, j);
             }
         }
         int entityCenterY = entity.getHitBox().getY() + entity.getHitBox().getHeight() / 2;
@@ -36,8 +34,8 @@ public class BFSPathFindingMovement implements Movement {
         int playerTileY = playerCenterY / gameMap.getTileSize();
         int playerTileX = playerCenterX / gameMap.getTileSize();
 
-        start = nodes[entityTileY][entityTileX];
-        goal = nodes[playerTileY][playerTileX];
+        Node start = nodes[entityTileY][entityTileX];
+        Node goal = nodes[playerTileY][playerTileX];
         if (start.equals(goal)) {
             Movement movement = new LocalPathFindingMovement();
             movement.move(entity);
@@ -53,11 +51,11 @@ public class BFSPathFindingMovement implements Movement {
             }
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
-                    int x = current.getX() + i;
-                    int y = current.getY() + j;
-                    if (x >= 0 && x < gameMap.getMaxCol() && y >= 0 && y < gameMap.getMaxRow()
-                            && !gameMap.isSolidTile(y*gameMap.getTileSize(), x*gameMap.getTileSize())) {
-                        Node neighbor = nodes[y][x];
+                    int newI = current.getX() + i;
+                    int newJ = current.getY() + j;
+                    if (newI >= 0 && newI < gameMap.getMaxCol() && newJ >= 0 && newJ < gameMap.getMaxRow()
+                            && !gameMap.isSolidTile(newJ * gameMap.getTileSize(), newI * gameMap.getTileSize())) {
+                        Node neighbor = nodes[newI][newJ];
                         if (neighbor.getParent() == null && !neighbor.equals(current)) {
                             neighbor.setParent(current);
                             openSet.add(neighbor);
@@ -80,49 +78,25 @@ public class BFSPathFindingMovement implements Movement {
             }
             current = current.getParent();
         }
+        int nextX= next.getY() * gameMap.getTileSize() + gameMap.getTileSize() / 2;
+        int nextY = next.getX() * gameMap.getTileSize() + gameMap.getTileSize() / 2;
         Direction direction = Direction.DOWN_LEFT;
-        if (next.getX() >= start.getX() && next.getY() >= start.getY()) {
-            direction = Direction.DOWN_RIGHT;
-        }
-        if (next.getX() < start.getX() && next.getY() >= start.getY()) {
-            direction = Direction.DOWN_LEFT;
-        }
-        if (next.getX() >= start.getX() && next.getY() < start.getY()) {
+        if (nextX >= entityCenterX && nextY >= entityCenterY) {
             direction = Direction.UP_RIGHT;
         }
-        if (next.getX() < start.getX() && next.getY() < start.getY()) {
+        if (nextX >= entityCenterX && nextY <= entityCenterY) {
+            direction = Direction.DOWN_RIGHT;
+        }
+        if (nextX < entityCenterX && nextY >= entityCenterY) {
             direction = Direction.UP_LEFT;
         }
         entity.setDirection(direction);
         int speed = entity.getSpeed();
         switch (direction) {
-            case UP:
-                entity.setY(entity.getY() - speed);
-                while (CollisionChecker.getInstance().checkCollisionTop(entity.getHitBox())) {
-                    entity.setY(entity.getY() + GameConstant.minSpeed);
-                }
-                break;
-            case DOWN:
-                while (CollisionChecker.getInstance().checkCollisionBottom(entity.getHitBox())) {
-                    entity.setY(entity.getY() - GameConstant.minSpeed);
-                }
-                break;
-            case LEFT:
-                entity.setX(entity.getX() - speed);
-                while (CollisionChecker.getInstance().checkCollisionLeft(entity.getHitBox())) {
-                    entity.setX(entity.getX() + GameConstant.minSpeed);
-                }
-                break;
-            case RIGHT:
-                entity.setX(entity.getX() + speed);
-                while (CollisionChecker.getInstance().checkCollisionRight(entity.getHitBox())) {
-                    entity.setX(entity.getX() - GameConstant.minSpeed);
-                }
-                break;
             case UP_LEFT:
-                entity.setY(entity.getY() - speed / 2);
+                entity.setY(entity.getY() + speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionTop(entity.getHitBox())) {
-                    entity.setY(entity.getY() + GameConstant.minSpeed);
+                    entity.setY(entity.getY() - GameConstant.minSpeed);
                 }
                 entity.setX(entity.getX() - speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionLeft(entity.getHitBox())) {
@@ -130,9 +104,9 @@ public class BFSPathFindingMovement implements Movement {
                 }
                 break;
             case UP_RIGHT:
-                entity.setY(entity.getY() - speed / 2);
+                entity.setY(entity.getY() + speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionTop(entity.getHitBox())) {
-                    entity.setY(entity.getY() + GameConstant.minSpeed);
+                    entity.setY(entity.getY() - GameConstant.minSpeed);
                 }
                 entity.setX(entity.getX() + speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionRight(entity.getHitBox())) {
@@ -140,9 +114,9 @@ public class BFSPathFindingMovement implements Movement {
                 }
                 break;
             case DOWN_LEFT:
-                entity.setY(entity.getY() + speed / 2);
+                entity.setY(entity.getY() - speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionBottom(entity.getHitBox())) {
-                    entity.setY(entity.getY() - GameConstant.minSpeed);
+                    entity.setY(entity.getY() + GameConstant.minSpeed);
                 }
                 entity.setX(entity.getX() - speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionLeft(entity.getHitBox())) {
@@ -150,9 +124,9 @@ public class BFSPathFindingMovement implements Movement {
                 }
                 break;
             case DOWN_RIGHT:
-                entity.setY(entity.getY() + speed / 2);
+                entity.setY(entity.getY() - speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionBottom(entity.getHitBox())) {
-                    entity.setY(entity.getY() - GameConstant.minSpeed);
+                    entity.setY(entity.getY() + GameConstant.minSpeed);
                 }
                 entity.setX(entity.getX() + speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionRight(entity.getHitBox())) {

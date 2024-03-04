@@ -21,12 +21,13 @@ public abstract class GameMap {
     protected int numberOfLayers;
     protected ArrayList<ArrayList<ArrayList<Tile>>> tiles;
 
+    protected String coverTilesPath;
     protected String tileSetPath;
     protected String gameMapPath;
-    protected String solidTilesPath;
     protected TileSet tileSet;
     protected int spawnX;
     protected int spawnY;
+    ArrayList<Integer> coverTiles = new ArrayList<>();
     protected ArrayList<Entity> entities;
     protected ArrayList<Attack> attacks;
 
@@ -36,8 +37,8 @@ public abstract class GameMap {
         attacks = new ArrayList<>();
         addEntity(SharedContext.getInstance().getCurrentPlayer());
         setGameMapPath();
+        setCoverTilesPath();
         setTileSetPath();
-        setSolidTilesPath();
         setMaxCol();
         setMaxRow();
         setTileSize();
@@ -51,6 +52,8 @@ public abstract class GameMap {
         loadEntities();
     }
 
+    protected abstract void setCoverTilesPath();
+
     protected abstract void setMaxCol();
 
     protected abstract void setMaxRow();
@@ -58,8 +61,6 @@ public abstract class GameMap {
     protected abstract void setTileSize();
 
     protected abstract void setGameMapPath();
-
-    protected abstract void setSolidTilesPath();
 
     protected abstract void setTileSetPath();
 
@@ -75,6 +76,15 @@ public abstract class GameMap {
     }
 
     protected void load() {
+        String coverTilesMap = XMLReader.getInstance().readMap(coverTilesPath).get(0);
+        String[] lines = coverTilesMap.split("\\s+");
+        for (int i = 1; i < lines.length; i++) {
+            for (String num : lines[i].split(",")) {
+                if (Integer.parseInt(num) > 0) {
+                    coverTiles.add(Integer.parseInt(num));
+                }
+            }
+        }
         List<String> layers = XMLReader.getInstance().readMap(gameMapPath);
         numberOfLayers = layers.size();
         tiles = new ArrayList<>(layers.size());
@@ -88,15 +98,31 @@ public abstract class GameMap {
             }
         }
         for (int i = 0; i < layers.size(); i++) {
-            String[] lines = layers.get(i).split("\\s+");
-            for (int x = 0; x < maxRow; x++) {
-                String[] nums = lines[x + 1].split(",");
-                for (int y = 0; y < maxCol; y++) {
-                    int id = Integer.parseInt(nums[y]);
-                    tiles.get(i).get(x).set(y, getTile(id));
+            lines = layers.get(i).split("\\s+");
+            for (int y = 0; y < maxRow; y++) {
+                String[] nums = lines[maxRow - y].split(",");
+                for (int x = 0; x < maxCol; x++) {
+                    int id = Integer.parseInt(nums[x]);
+                    tiles.get(i).get(y).set(x, getTile(id));
                 }
             }
         }
+    }
+
+    private Tile getTile(int id) {
+        if (id > 0) {
+            id--;
+        } else {
+            return null;
+        }
+        id %= tileSet.getMaxCol() * tileSet.getMaxRow();
+        int x = id % tileSet.getMaxCol();
+        int y = id / tileSet.getMaxRow();
+        Tile tile = new Tile(tileSet, x, y, tileSize, tileSize);
+        if (coverTiles.contains(id + 1)) {
+            tile.setCover(true);
+        }
+        return tile;
     }
 
     public void addEntity(Entity entity) {
@@ -115,18 +141,6 @@ public abstract class GameMap {
         attacks.remove(attack);
     }
 
-
-    private Tile getTile(int id) {
-        if (id > 0) {
-            id--;
-        }else{
-            return null;
-        }
-        id %= tileSet.getMaxCol() * tileSet.getMaxRow();
-        int x = id % tileSet.getMaxCol();
-        int y = id / tileSet.getMaxRow();
-        return new Tile(tileSet, x, y, tileSize, tileSize);
-    }
 
     public void update() {
         updateEntities();
@@ -183,9 +197,9 @@ public abstract class GameMap {
         }
     }
 
-    public boolean isSolidTile(float x, float y) {
-        int row = Math.round(y / tileSize);
-        int col = Math.round(x / tileSize);
+    public boolean isSolidTile(int x, int y) {
+        int row = y / tileSize;
+        int col = x / tileSize;
         if (row < 0 || col < 0 || row >= maxRow || col >= maxCol) {
             return true;
         }
@@ -194,27 +208,34 @@ public abstract class GameMap {
 
 
     public void draw(SpriteBatch spriteBatch, Camera camera) {
-        drawWorld(spriteBatch, camera);
+        drawTiles(spriteBatch, camera);
         drawEntities(spriteBatch, camera);
+        drawCoverTiles(spriteBatch, camera);
     }
 
-    private void drawWorld(SpriteBatch spriteBatch, Camera camera) {
+    private void drawCoverTiles(SpriteBatch spriteBatch, Camera camera) {
         int startRow = camera.getY() / tileSize;
         int startCol = camera.getX() / tileSize;
         for (ArrayList<ArrayList<Tile>> tile : tiles) {
-            for (int x = startRow; x <= startRow + GameConstant.maxScreenRow && x < maxRow; ++x) {
-                for (int y = startCol; y <= startCol + GameConstant.maxScreenCol && y < maxCol; ++y) {
-                    if (tile.get(x).get(y) != null) {
-                        spriteBatch.draw(tile.get(x).get(y).getTextureRegion(), y * tileSize - camera.getX(), x * tileSize - camera.getY());
+            for (int y = startRow; y <= startRow + GameConstant.maxScreenRow && y < maxRow; ++y) {
+                for (int x = startCol; x <= startCol + GameConstant.maxScreenCol && x < maxCol; ++x) {
+                    if (tile.get(y).get(x) != null && tile.get(y).get(x).isCover()) {
+                        spriteBatch.draw(tile.get(y).get(x).getTextureRegion(), x * tileSize - camera.getX(), y * tileSize - camera.getY());
                     }
                 }
             }
         }
-        //draw layer0
-        for(int i = 0; i < maxRow; i++){
-            for(int j = 0; j < maxCol; j++){
-                if(tiles.get(0).get(i).get(j) != null){
-                    spriteBatch.draw(tiles.get(0).get(i).get(j).getTextureRegion(), j * tileSize - camera.getX(), i * tileSize - camera.getY());
+    }
+
+    private void drawTiles(SpriteBatch spriteBatch, Camera camera) {
+        int startRow = camera.getY() / tileSize;
+        int startCol = camera.getX() / tileSize;
+        for (ArrayList<ArrayList<Tile>> tile : tiles) {
+            for (int y = startRow; y <= startRow + GameConstant.maxScreenRow && y < maxRow; ++y) {
+                for (int x = startCol; x <= startCol + GameConstant.maxScreenCol && x < maxCol; ++x) {
+                    if (tile.get(y).get(x) != null) {
+                        spriteBatch.draw(tile.get(y).get(x).getTextureRegion(), x * tileSize - camera.getX(), y * tileSize - camera.getY());
+                    }
                 }
             }
         }

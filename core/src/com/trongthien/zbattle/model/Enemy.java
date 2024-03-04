@@ -126,9 +126,9 @@ public abstract class Enemy extends Entity {
         findTile();
         Tile tile = new Tile(enemyTileSet, tileX, tileY, width, height);
         TextureRegion enemyImage = tile.getTextureRegion();
-        if (x >= camera.getX() && x + width <= camera.getX() + GameConstant.screenWidth && y >= camera.getY() && y + height <= camera.getY() + GameConstant.screenHeight) {
+        if (x >= camera.getX() && x + width <= camera.getX() + GameConstant.screenWidth && y + height >= camera.getY() && y <= camera.getY() + GameConstant.screenHeight) {
             spriteBatch.draw(enemyImage, x - camera.getX(), y - camera.getY());
-            healthBar.draw(spriteBatch, x - camera.getX(), GameConstant.screenHeight - (y - camera.getY() - height), width, 5);
+            healthBar.draw(spriteBatch, x - camera.getX(), y + height + 5 - camera.getY(), width, 5);
         }
     }
 }

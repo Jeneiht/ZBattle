@@ -15,17 +15,17 @@ public class RandomMovement implements Movement {
         Direction direction = entity.getDirection();
         switch (direction) {
             case UP:
-                entity.setY(entity.getY() - speed);
+                entity.setY(entity.getY() + speed);
                 while (CollisionChecker.getInstance().checkCollisionTop(entity.getHitBox())) {
                     isCollision = true;
-                    entity.setY(entity.getY() + GameConstant.minSpeed);
+                    entity.setY(entity.getY() - GameConstant.minSpeed);
                 }
                 break;
             case DOWN:
-                entity.setY(entity.getY() + speed);
+                entity.setY(entity.getY() - speed);
                 while (CollisionChecker.getInstance().checkCollisionBottom(entity.getHitBox())) {
                     isCollision = true;
-                    entity.setY(entity.getY() - GameConstant.minSpeed);
+                    entity.setY(entity.getY() + GameConstant.minSpeed);
                 }
                 break;
             case LEFT:
@@ -42,10 +42,10 @@ public class RandomMovement implements Movement {
                     entity.setX(entity.getX() - GameConstant.minSpeed);}
                 break;
             case UP_LEFT:
-                entity.setY(entity.getY() - speed / 2);
+                entity.setY(entity.getY() + speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionTop(entity.getHitBox())) {
                     isCollision = true;
-                    entity.setY(entity.getY() + GameConstant.minSpeed);
+                    entity.setY(entity.getY() - GameConstant.minSpeed);
                 }
                 entity.setX(entity.getX() - speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionLeft(entity.getHitBox())) {
@@ -54,10 +54,10 @@ public class RandomMovement implements Movement {
                 }
                 break;
             case UP_RIGHT:
-                entity.setY(entity.getY() - speed / 2);
+                entity.setY(entity.getY() + speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionTop(entity.getHitBox())) {
                     isCollision = true;
-                    entity.setY(entity.getY() + GameConstant.minSpeed);
+                    entity.setY(entity.getY() - GameConstant.minSpeed);
                 }
                 entity.setX(entity.getX() + speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionRight(entity.getHitBox())) {
@@ -66,10 +66,10 @@ public class RandomMovement implements Movement {
                 }
                 break;
             case DOWN_LEFT:
-                entity.setY(entity.getY() + speed / 2);
+                entity.setY(entity.getY() - speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionBottom(entity.getHitBox())) {
                     isCollision = true;
-                    entity.setY(entity.getY() - GameConstant.minSpeed);
+                    entity.setY(entity.getY() + GameConstant.minSpeed);
                 }
                 entity.setX(entity.getX() - speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionLeft(entity.getHitBox())) {
@@ -78,10 +78,10 @@ public class RandomMovement implements Movement {
                 }
                 break;
             case DOWN_RIGHT:
-                entity.setY(entity.getY() + speed / 2);
+                entity.setY(entity.getY() - speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionBottom(entity.getHitBox())) {
                     isCollision = true;
-                    entity.setY(entity.getY() - GameConstant.minSpeed);
+                    entity.setY(entity.getY() + GameConstant.minSpeed);
                 }
                 entity.setX(entity.getX() + speed / 2);
                 while (CollisionChecker.getInstance().checkCollisionRight(entity.getHitBox())) {
