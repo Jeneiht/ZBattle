@@ -57,9 +57,8 @@ public class ForestMap extends GameMap {
 
     @Override
     public void loadEntities() {
-        addEntity(new Scorpion1(100, 300));
-        addEntity(new Scorpion1(100, 400));
-        addEntity(new Scorpion1(100, 500));
+//        addEntity(new Scorpion1(100, 300));
+//        addEntity(new Scorpion1(100, 400));
     }
 
 }

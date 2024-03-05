@@ -122,13 +122,12 @@ public abstract class Enemy extends Entity {
     }
 
     @Override
-    public void draw(SpriteBatch spriteBatch, Camera camera) {
+    public void draw(SpriteBatch spriteBatch) {
         findTile();
         Tile tile = new Tile(enemyTileSet, tileX, tileY, width, height);
         TextureRegion enemyImage = tile.getTextureRegion();
-        if (x >= camera.getX() && x + width <= camera.getX() + GameConstant.screenWidth && y + height >= camera.getY() && y <= camera.getY() + GameConstant.screenHeight) {
-            spriteBatch.draw(enemyImage, x - camera.getX(), y - camera.getY());
-            healthBar.draw(spriteBatch, x - camera.getX(), y + height + 5 - camera.getY(), width, 5);
-        }
+        spriteBatch.draw(enemyImage, x, y);
+        healthBar.draw(spriteBatch, x, y + height + 5, width, 5);
+
     }
 }

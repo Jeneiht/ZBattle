@@ -29,6 +29,6 @@ public abstract class Entity {
     public abstract HitBox getHitBox();
     protected Attack currentAttack;
     protected boolean attacking;
-    public abstract void draw(SpriteBatch spriteBatch, Camera camera);
+    public abstract void draw(SpriteBatch spriteBatch);
     public abstract void update();
 }

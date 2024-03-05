@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.trongthien.zbattle.common.constant.GameConstant;
 import com.trongthien.zbattle.model.Entity;
 
 public class HealthBar {
     private int maxHealth;
     private int currentHealth;
-    Entity entity;
-    ShapeRenderer shapeRenderer;
+    private Entity entity;
+    private ShapeRenderer shapeRenderer;
 
     public HealthBar(Entity entity) {
         this.entity = entity;
@@ -25,6 +26,8 @@ public class HealthBar {
     }
 
     public void draw(SpriteBatch batch, float x, float y, float width, float height) {
+        width *= GameConstant.scale;
+        height *= GameConstant.scale;
         Pixmap pixmap = new Pixmap((int) width, (int) height, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.RED);
         pixmap.fillRectangle(0, 0, (int) (width * currentHealth / maxHealth), (int) height);

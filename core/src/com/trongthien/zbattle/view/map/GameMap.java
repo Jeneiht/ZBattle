@@ -207,44 +207,39 @@ public abstract class GameMap {
     }
 
 
-    public void draw(SpriteBatch spriteBatch, Camera camera) {
-        drawTiles(spriteBatch, camera);
-        drawEntities(spriteBatch, camera);
-        drawCoverTiles(spriteBatch, camera);
+    public void draw(SpriteBatch spriteBatch) {
+        drawTiles(spriteBatch);
+        drawEntities(spriteBatch);
+        drawCoverTiles(spriteBatch);
     }
 
-    private void drawCoverTiles(SpriteBatch spriteBatch, Camera camera) {
-        int startRow = camera.getY() / tileSize;
-        int startCol = camera.getX() / tileSize;
+    private void drawCoverTiles(SpriteBatch spriteBatch) {
         for (ArrayList<ArrayList<Tile>> tile : tiles) {
-            for (int y = startRow; y <= startRow + GameConstant.maxScreenRow && y < maxRow; ++y) {
-                for (int x = startCol; x <= startCol + GameConstant.maxScreenCol && x < maxCol; ++x) {
+            for (int y = 0; y < maxRow; ++y) {
+                for (int x = 0; x < maxCol; ++x) {
                     if (tile.get(y).get(x) != null && tile.get(y).get(x).isCover()) {
-                        spriteBatch.draw(tile.get(y).get(x).getTextureRegion(), x * tileSize - camera.getX(), y * tileSize - camera.getY());
+                        spriteBatch.draw(tile.get(y).get(x).getTextureRegion(), x * tileSize, y * tileSize);
                     }
                 }
             }
         }
     }
 
-    private void drawTiles(SpriteBatch spriteBatch, Camera camera) {
-        int startRow = camera.getY() / tileSize;
-        int startCol = camera.getX() / tileSize;
+    private void drawTiles(SpriteBatch spriteBatch) {
         for (ArrayList<ArrayList<Tile>> tile : tiles) {
-            for (int y = startRow; y <= startRow + GameConstant.maxScreenRow && y < maxRow; ++y) {
-                for (int x = startCol; x <= startCol + GameConstant.maxScreenCol && x < maxCol; ++x) {
-                    if (tile.get(y).get(x) != null) {
-                        spriteBatch.draw(tile.get(y).get(x).getTextureRegion(), x * tileSize - camera.getX(), y * tileSize - camera.getY());
+            for (int y = 0; y < maxRow; ++y) {
+                for (int x = 0; x < maxCol; ++x) {
+                    if (tile.get(y).get(x) != null && !tile.get(y).get(x).isCover()) {
+                        spriteBatch.draw(tile.get(y).get(x).getTextureRegion(), x * tileSize, y * tileSize);
                     }
                 }
             }
         }
-
     }
 
-    private void drawEntities(SpriteBatch spriteBatch, Camera camera) {
+    private void drawEntities(SpriteBatch spriteBatch) {
         for (Entity entity : entities) {
-            entity.draw(spriteBatch, camera);
+            entity.draw(spriteBatch);
         }
     }
 }

@@ -139,17 +139,11 @@ public abstract class Player extends Entity {
     }
 
     @Override
-    public void draw(SpriteBatch spriteBatch, Camera camera) {
+    public void draw(SpriteBatch spriteBatch) {
         findTile();
         Tile tile = new Tile(playerTileSet, tileX, tileY, width, height);
         TextureRegion heroImage = tile.getTextureRegion();
-        if(Direction.force(direction) == Direction.LEFT) {
-            System.out.println("flip");
-        }else{
-            System.out.println("not flip");
-        }
-
-        spriteBatch.draw(heroImage, x - camera.getX(), y - camera.getY());
+        spriteBatch.draw(heroImage, x, y);
         healthBar.draw(spriteBatch, 20, 20, 200, 20);
     }
 }

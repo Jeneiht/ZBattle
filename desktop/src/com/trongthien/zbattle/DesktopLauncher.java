@@ -19,7 +19,7 @@ public class DesktopLauncher {
 		config.setWindowedMode(GameConstant.screenWidth, GameConstant.screenHeight);
 
 		config.setWindowPosition(GameConstant.screenX, GameConstant.screenY);
-		config.setWindowSizeLimits(GameConstant.screenWidth, GameConstant.screenHeight, GameConstant.screenWidth*GameConstant.scale, GameConstant.screenHeight*GameConstant.scale);
+		config.setWindowSizeLimits(GameConstant.screenWidth, GameConstant.screenHeight, GameConstant.screenWidth, GameConstant.screenHeight);
 		new Lwjgl3Application(new MainGame(), config);
 	}
 }
