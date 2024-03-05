@@ -2,15 +2,13 @@ package com.trongthien.zbattle;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.trongthien.zbattle.common.constant.GameConstant;
 import com.trongthien.zbattle.model.Hero2;
-import com.trongthien.zbattle.view.CustomDrawer;
 import com.trongthien.zbattle.view.map.Camera;
 import com.trongthien.zbattle.view.map.impl.ForestMap;
-import com.trongthien.zbattle.model.Hero;
 import com.trongthien.zbattle.view.FrameRate;
 import com.trongthien.zbattle.common.SharedContext;
 import com.trongthien.zbattle.common.io.KeyHandler;
@@ -30,8 +28,15 @@ public class MainGame extends ApplicationAdapter {
         frameRate = new FrameRate();
         frameRate.update();
         camera = new Camera(SharedContext.getInstance().getCurrentPlayer(), SharedContext.getInstance().getCurrentGameMap());
+        playBackgroundMusic();
     }
+    private void playBackgroundMusic() {
+        Music music = Gdx.audio.newMusic(Gdx.files.internal(GameConstant.backgroundMusicPath));
+        music.setLooping(true);
+        music.setVolume(0.5f);
+        music.play();
 
+    }
     //Main loop
     @Override
     public void render() {

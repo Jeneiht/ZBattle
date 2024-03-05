@@ -14,15 +14,12 @@ public class DesktopLauncher {
 		config.setIdleFPS(0);
 		config.setTransparentFramebuffer(true);
 		
-		config.setTitle("ZBattle2");
+		config.setTitle("ZBattle");
 		config.useVsync(true);
 		config.setWindowedMode(GameConstant.screenWidth, GameConstant.screenHeight);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int centerX = (int)(screenSize.getWidth() - GameConstant.screenWidth) / 2;
-		int centerY = (int)(screenSize.getHeight() - GameConstant.screenHeight) / 2;
 
-		config.setWindowPosition(centerX, centerY);
-		config.setWindowSizeLimits(GameConstant.screenWidth, GameConstant.screenHeight, GameConstant.screenWidth, GameConstant.screenHeight);
+		config.setWindowPosition(GameConstant.screenX, GameConstant.screenY);
+		config.setWindowSizeLimits(GameConstant.screenWidth, GameConstant.screenHeight, GameConstant.screenWidth*GameConstant.scale, GameConstant.screenHeight*GameConstant.scale);
 		new Lwjgl3Application(new MainGame(), config);
 	}
 }

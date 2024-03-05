@@ -17,27 +17,27 @@ public class NormalSword extends Attack {
         switch (direction){
             case DOWN:
                 hitBox.setX(ownerX);
-                hitBox.setY(ownerY+24);
-                hitBox.setWidth(64);
-                hitBox.setHeight(40);
+                hitBox.setY(ownerY);
+                hitBox.setWidth(32);
+                hitBox.setHeight(32);
                 break;
             case UP:
                 hitBox.setX(ownerX);
                 hitBox.setY(ownerY);
-                hitBox.setWidth(64);
-                hitBox.setHeight(40);
+                hitBox.setWidth(32);
+                hitBox.setHeight(32);
                 break;
             case LEFT:
                 hitBox.setX(ownerX);
                 hitBox.setY(ownerY);
-                hitBox.setWidth(40);
-                hitBox.setHeight(64);
+                hitBox.setWidth(32);
+                hitBox.setHeight(32);
                 break;
             case RIGHT:
-                hitBox.setX(ownerX+24);
+                hitBox.setX(ownerX);
                 hitBox.setY(ownerY);
-                hitBox.setWidth(40);
-                hitBox.setHeight(64);
+                hitBox.setWidth(32);
+                hitBox.setHeight(32);
                 break;
         }
         return hitBox;

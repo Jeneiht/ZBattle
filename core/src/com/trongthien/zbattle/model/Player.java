@@ -143,6 +143,12 @@ public abstract class Player extends Entity {
         findTile();
         Tile tile = new Tile(playerTileSet, tileX, tileY, width, height);
         TextureRegion heroImage = tile.getTextureRegion();
+        if(Direction.force(direction) == Direction.LEFT) {
+            System.out.println("flip");
+        }else{
+            System.out.println("not flip");
+        }
+
         spriteBatch.draw(heroImage, x - camera.getX(), y - camera.getY());
         healthBar.draw(spriteBatch, 20, 20, 200, 20);
     }
