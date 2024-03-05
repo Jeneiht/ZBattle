@@ -27,7 +27,7 @@ public class Camera {
         if (x + GameConstant.screenWidth > gameMap.width) {
             x = gameMap.width - GameConstant.screenWidth;
         }
-        if (y + GameConstant.screenHeight > gameMap.height) {
+        if (y > gameMap.height) {
             y = gameMap.height - GameConstant.screenHeight;
         }
     }

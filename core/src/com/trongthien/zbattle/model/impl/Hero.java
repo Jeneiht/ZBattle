@@ -1,8 +1,9 @@
-package com.trongthien.zbattle.model;
+package com.trongthien.zbattle.model.impl;
 
 import com.trongthien.zbattle.controller.combat.attack.NormalSword;
 import com.trongthien.zbattle.controller.combat.hitbox.HitBox;
 import com.trongthien.zbattle.controller.movement.Direction;
+import com.trongthien.zbattle.model.Player;
 import com.trongthien.zbattle.model.constant.PlayerState;
 
 import java.util.Map;

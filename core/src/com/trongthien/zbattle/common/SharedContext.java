@@ -1,5 +1,6 @@
 package com.trongthien.zbattle.common;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.trongthien.zbattle.view.map.GameMap;
 import com.trongthien.zbattle.model.Player;
 import lombok.Getter;
@@ -15,6 +16,7 @@ public class SharedContext {
     JPanel currentPanel;
     GameMap currentGameMap;
     Player currentPlayer;
+    OrthographicCamera camera;
 
     private SharedContext() {
     }

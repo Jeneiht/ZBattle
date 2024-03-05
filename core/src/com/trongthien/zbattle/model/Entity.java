@@ -20,7 +20,6 @@ public abstract class Entity {
     protected int damage;
     protected int defense;
     protected Movement currentMovement;
-    protected CollisionChecker collisionChecker;
     protected int x, y;
     protected  int width, height;
     protected int speed;
@@ -29,6 +28,8 @@ public abstract class Entity {
     public abstract HitBox getHitBox();
     protected Attack currentAttack;
     protected boolean attacking;
+    protected boolean dead=false;
     public abstract void draw(SpriteBatch spriteBatch);
     public abstract void update();
+    public abstract void drawHealthBar(SpriteBatch spriteBatch);
 }

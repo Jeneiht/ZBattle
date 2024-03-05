@@ -9,6 +9,15 @@ import com.trongthien.zbattle.common.io.KeyHandler;
 import lombok.var;
 
 public class PlayerMovement implements Movement {
+    //Singleton
+    private static PlayerMovement instance;
+    private PlayerMovement(){}
+    public static PlayerMovement getInstance(){
+        if(instance==null){
+            instance = new PlayerMovement();
+        }
+        return instance;
+    }
     @Override
     public void move(Entity entity) {
         int speed = entity.getSpeed();

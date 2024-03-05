@@ -1,5 +1,6 @@
 package com.trongthien.zbattle.controller.movement.impl;
 
+import com.trongthien.zbattle.controller.combat.hitbox.HitBoxUtils;
 import com.trongthien.zbattle.controller.movement.Direction;
 import com.trongthien.zbattle.model.Entity;
 import com.trongthien.zbattle.controller.movement.Movement;
@@ -8,10 +9,22 @@ import com.trongthien.zbattle.common.SharedContext;
 import com.trongthien.zbattle.common.constant.GameConstant;
 
 public class LocalPathFindingMovement implements Movement {
+    //Singleton
+    private static LocalPathFindingMovement instance;
+    private LocalPathFindingMovement(){}
+    public static LocalPathFindingMovement getInstance(){
+        if(instance==null){
+            instance = new LocalPathFindingMovement();
+        }
+        return instance;
+    }
     private float goalX, goalY;
 
     @Override
     public void move(Entity entity) {
+        if(HitBoxUtils.getInstance().checkCollide(entity.getHitBox(), SharedContext.getInstance().getCurrentPlayer().getHitBox())){
+            return;
+        }
         setGoal(SharedContext.getInstance().getCurrentPlayer());
         int speed = entity.getSpeed();
         int x = (entity.getX() + entity.getWidth()) / 2;

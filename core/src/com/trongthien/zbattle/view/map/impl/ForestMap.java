@@ -2,7 +2,9 @@ package com.trongthien.zbattle.view.map.impl;
 
 
 import com.trongthien.zbattle.common.constant.GameConstant;
-import com.trongthien.zbattle.model.Scorpion1;
+import com.trongthien.zbattle.model.impl.Ghoul;
+import com.trongthien.zbattle.model.impl.GiantFly;
+import com.trongthien.zbattle.model.impl.Ratfolk;
 import com.trongthien.zbattle.view.map.GameMap;
 
 public class ForestMap extends GameMap {
@@ -57,8 +59,9 @@ public class ForestMap extends GameMap {
 
     @Override
     public void loadEntities() {
-//        addEntity(new Scorpion1(100, 300));
-//        addEntity(new Scorpion1(100, 400));
+           addEntity(new GiantFly(100, 50));
+           addEntity(new Ratfolk(200, 50));
+           addEntity(new Ghoul(300,800));
     }
 
 }

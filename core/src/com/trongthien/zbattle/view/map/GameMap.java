@@ -6,7 +6,6 @@ import com.trongthien.zbattle.common.io.XMLReader;
 import com.trongthien.zbattle.model.Entity;
 import com.trongthien.zbattle.controller.combat.hitbox.HitBoxUtils;
 import com.trongthien.zbattle.common.SharedContext;
-import com.trongthien.zbattle.common.constant.GameConstant;
 import lombok.Getter;
 
 import java.util.*;
@@ -164,7 +163,7 @@ public abstract class GameMap {
     private void removeDeadEntities() {
         ArrayList<Entity> deadEntities = new ArrayList<>();
         for (Entity entity : entities) {
-            if (entity.getHealth() <= 0) {
+            if(entity.isDead()){
                 deadEntities.add(entity);
             }
         }
@@ -211,8 +210,16 @@ public abstract class GameMap {
         drawTiles(spriteBatch);
         drawEntities(spriteBatch);
         drawCoverTiles(spriteBatch);
+        drawHealthBars(spriteBatch);
+        drawNothing(spriteBatch);
     }
-
+    private void drawNothing(SpriteBatch spriteBatch) {
+    }
+    private void drawHealthBars(SpriteBatch spriteBatch) {
+        for (Entity entity : entities) {
+            entity.drawHealthBar(spriteBatch);
+        }
+    }
     private void drawCoverTiles(SpriteBatch spriteBatch) {
         for (ArrayList<ArrayList<Tile>> tile : tiles) {
             for (int y = 0; y < maxRow; ++y) {

@@ -39,4 +39,26 @@ public enum Direction {
                 return UP;
         }
     }
+    public static Direction reverse(Direction direction) {
+        switch (direction) {
+            case UP:
+                return DOWN;
+            case DOWN:
+                return UP;
+            case LEFT:
+                return RIGHT;
+            case RIGHT:
+                return LEFT;
+            case UP_LEFT:
+                return DOWN_RIGHT;
+            case UP_RIGHT:
+                return DOWN_LEFT;
+            case DOWN_LEFT:
+                return UP_RIGHT;
+            case DOWN_RIGHT:
+                return UP_LEFT;
+            default:
+                return UP;
+        }
+    }
 }

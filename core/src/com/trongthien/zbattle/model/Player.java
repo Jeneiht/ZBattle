@@ -39,7 +39,7 @@ public abstract class Player extends Entity {
 
     protected Player() {
         party = Party.PLAYER;
-        currentMovement = new PlayerMovement();
+        currentMovement = PlayerMovement.getInstance();
         playerStateBlocked = false;
         setHealth();
         healthBar = new HealthBar(this);
@@ -96,7 +96,6 @@ public abstract class Player extends Entity {
             animation.update();
         }
         doAttack();
-        healthBar.update();
     }
 
     private void updateSpeed() {
@@ -137,13 +136,15 @@ public abstract class Player extends Entity {
         tileY = mapTileY.get(Map.of(playerState, Direction.force(direction)));
         tileX = animation.getFrame();
     }
-
+    @Override
+    public void drawHealthBar(SpriteBatch spriteBatch) {
+        healthBar.draw(spriteBatch,x,y+height-2,32,2);
+    }
     @Override
     public void draw(SpriteBatch spriteBatch) {
         findTile();
         Tile tile = new Tile(playerTileSet, tileX, tileY, width, height);
         TextureRegion heroImage = tile.getTextureRegion();
         spriteBatch.draw(heroImage, x, y);
-        healthBar.draw(spriteBatch, 20, 20, 200, 20);
     }
 }

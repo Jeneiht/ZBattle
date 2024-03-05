@@ -8,6 +8,15 @@ import com.trongthien.zbattle.common.constant.GameConstant;
 import lombok.var;
 
 public class RandomMovement implements Movement {
+    //Singleton
+    private static RandomMovement instance;
+    private RandomMovement(){}
+    public static RandomMovement getInstance(){
+        if(instance==null){
+            instance = new RandomMovement();
+        }
+        return instance;
+    }
     @Override
     public void move(Entity entity) {
         boolean isCollision = false;

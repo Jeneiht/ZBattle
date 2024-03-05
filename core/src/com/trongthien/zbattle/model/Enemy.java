@@ -24,11 +24,12 @@ public abstract class Enemy extends Entity {
     protected TileSet enemyTileSet;
     protected int tileX, tileY;
     protected EnemyState enemyState;
-    protected int walkSpeed, runSpeed, idleSpeed;
+    protected int walkSpeed, runSpeed, idleSpeed,attackSpeed;
     protected Map<EnemyState, Integer> maxFrame = new HashMap<>();
     protected Map<Map<EnemyState, Direction>, Integer> mapTileY = new HashMap<>();
     private Animation animation;
     private boolean enemyStateBlocked;
+    protected int aggroRange;
 
     public Enemy(int x, int y) {
         party = Party.ENEMY;
@@ -42,17 +43,16 @@ public abstract class Enemy extends Entity {
         setWalkSpeed();
         setRunSpeed();
         setIdleSpeed();
-        setCurrentMovement();
+        setAttackSpeed();
+        setAggroRange();
         enemyTileSet = new TileSet(enemyTileSetPath, width);
-        enemyState = EnemyState.WALK;
+        enemyState = EnemyState.IDLE;
         direction = Direction.values()[(int) (Math.random() * Direction.values().length)];
         loadFrameInfo();
         animation = new Animation(GameConstant.animationSpeed);
         animation.start(maxFrame.get(enemyState));
     }
-
-    protected abstract void setCurrentMovement();
-
+    protected abstract void setAggroRange();
     protected abstract void setRunSpeed();
 
     protected abstract void setWalkSpeed();
@@ -66,12 +66,14 @@ public abstract class Enemy extends Entity {
     protected abstract void setWidth();
 
     protected abstract void setHeight();
+    protected abstract void setAttackSpeed();
 
 
     @Override
     public void update() {
         EnemyState previousState = enemyState;
         updateSpeed();
+        updateMovement();
         currentMovement.move(this);
         if (animation.isFinished()) {
             enemyStateBlocked = false;
@@ -79,18 +81,17 @@ public abstract class Enemy extends Entity {
         if (!enemyStateBlocked) {
             updateEnemyState();
         }
-        if (enemyState == EnemyState.ATTACK) {
-            attacking = true;
-        } else {
-            attacking = false;
+        attacking = enemyState == EnemyState.ATTACK;
+        if(enemyState == EnemyState.DIE||enemyState==EnemyState.ATTACK){
+            enemyStateBlocked = true;
         }
         if (enemyState != previousState || animation == null) {
+            assert animation != null;
             animation.start(maxFrame.get(enemyState));
         } else {
             animation.update();
         }
         doAttack();
-        healthBar.update();
     }
 
     protected abstract void updateEnemyState();
@@ -103,6 +104,9 @@ public abstract class Enemy extends Entity {
         } else if (enemyState == EnemyState.IDLE) {
             speed = idleSpeed;
         }
+        else if(enemyState == EnemyState.ATTACK){
+            speed = attackSpeed;
+        }
     }
 
     private void doAttack() {
@@ -113,21 +117,22 @@ public abstract class Enemy extends Entity {
     }
 
     protected abstract void setCurrentAttack(EnemyState enemyState);
-
+    protected abstract void updateMovement();
     protected abstract void loadFrameInfo();
 
     private void findTile() {
         tileY = mapTileY.get(Map.of(enemyState, Direction.force(direction)));
         tileX = animation.getFrame();
     }
-
+    @Override
+    public void drawHealthBar(SpriteBatch spriteBatch){
+        healthBar.draw(spriteBatch,x+((float)x-32)/2,y+height-2,32,2);
+    }
     @Override
     public void draw(SpriteBatch spriteBatch) {
         findTile();
         Tile tile = new Tile(enemyTileSet, tileX, tileY, width, height);
         TextureRegion enemyImage = tile.getTextureRegion();
         spriteBatch.draw(enemyImage, x, y);
-        healthBar.draw(spriteBatch, x, y + height + 5, width, 5);
-
     }
 }

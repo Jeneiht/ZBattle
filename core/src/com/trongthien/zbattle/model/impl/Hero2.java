@@ -1,19 +1,20 @@
-package com.trongthien.zbattle.model;
+package com.trongthien.zbattle.model.impl;
 
 import com.trongthien.zbattle.controller.combat.attack.NormalSword;
 import com.trongthien.zbattle.controller.combat.hitbox.HitBox;
 import com.trongthien.zbattle.controller.movement.Direction;
+import com.trongthien.zbattle.model.Player;
 import com.trongthien.zbattle.model.constant.PlayerState;
 
 import java.util.Map;
 
-public class Hero2 extends Player  {
+public class Hero2 extends Player {
     public Hero2() {
         super();
     }
     @Override
     public HitBox getHitBox() {
-        return new HitBox(x+10,y+1,9,9);
+        return new HitBox(x+10,y+1,8,8);
     }
 
     @Override
@@ -64,21 +65,21 @@ public class Hero2 extends Player  {
     protected void loadFrameInfo() {
         //init mapTileY
         mapTileY.put(Map.of(PlayerState.IDLE, Direction.DOWN), 0);
-        mapTileY.put(Map.of(PlayerState.IDLE, Direction.LEFT), 0);
-        mapTileY.put(Map.of(PlayerState.IDLE, Direction.RIGHT), 0);
         mapTileY.put(Map.of(PlayerState.IDLE, Direction.UP), 0);
-        mapTileY.put(Map.of(PlayerState.WALK, Direction.DOWN), 1);
-        mapTileY.put(Map.of(PlayerState.WALK, Direction.LEFT), 1);
-        mapTileY.put(Map.of(PlayerState.WALK, Direction.RIGHT), 1);
-        mapTileY.put(Map.of(PlayerState.WALK, Direction.UP), 1);
-        mapTileY.put(Map.of(PlayerState.RUN, Direction.DOWN), 1);
-        mapTileY.put(Map.of(PlayerState.RUN, Direction.LEFT), 1);
-        mapTileY.put(Map.of(PlayerState.RUN, Direction.RIGHT), 1);
-        mapTileY.put(Map.of(PlayerState.RUN, Direction.UP), 1);
-        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.DOWN), 2);
-        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.RIGHT), 2);
-        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.UP), 2);
-        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.LEFT), 2);
+        mapTileY.put(Map.of(PlayerState.IDLE, Direction.RIGHT), 0);
+        mapTileY.put(Map.of(PlayerState.IDLE, Direction.LEFT), 1);
+        mapTileY.put(Map.of(PlayerState.WALK, Direction.DOWN), 2);
+        mapTileY.put(Map.of(PlayerState.WALK, Direction.UP), 2);
+        mapTileY.put(Map.of(PlayerState.WALK, Direction.RIGHT), 2);
+        mapTileY.put(Map.of(PlayerState.WALK, Direction.LEFT), 3);
+        mapTileY.put(Map.of(PlayerState.RUN, Direction.DOWN), 2);
+        mapTileY.put(Map.of(PlayerState.RUN, Direction.UP), 2);
+        mapTileY.put(Map.of(PlayerState.RUN, Direction.RIGHT), 2);
+        mapTileY.put(Map.of(PlayerState.RUN, Direction.LEFT), 3);
+        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.DOWN), 4);
+        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.UP), 4);
+        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.RIGHT), 4);
+        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.LEFT), 5);
 
         //init maxFrame
         maxFrame.put(PlayerState.IDLE, 13);

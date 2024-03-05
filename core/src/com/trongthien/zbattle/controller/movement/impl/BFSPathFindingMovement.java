@@ -13,6 +13,15 @@ import com.trongthien.zbattle.common.constant.GameConstant;
 import java.util.Queue;
 
 public class BFSPathFindingMovement implements Movement {
+    //Singleton
+    private static BFSPathFindingMovement instance;
+    private BFSPathFindingMovement(){}
+    public static BFSPathFindingMovement getInstance(){
+        if(instance==null){
+            instance = new BFSPathFindingMovement();
+        }
+        return instance;
+    }
 
     @Override
     public void move(Entity entity) {
@@ -37,7 +46,7 @@ public class BFSPathFindingMovement implements Movement {
         Node start = nodes[entityTileY][entityTileX];
         Node goal = nodes[playerTileY][playerTileX];
         if (start.equals(goal)) {
-            Movement movement = new LocalPathFindingMovement();
+            Movement movement = LocalPathFindingMovement.getInstance();
             movement.move(entity);
             return;
         }
