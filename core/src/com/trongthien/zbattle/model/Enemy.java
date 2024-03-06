@@ -126,7 +126,7 @@ public abstract class Enemy extends Entity {
     }
     @Override
     public void drawHealthBar(SpriteBatch spriteBatch){
-        healthBar.draw(spriteBatch,x+((float)x-32)/2,y+height-2,32,2);
+        healthBar.draw(spriteBatch,x,y+height-2,32,2);
     }
     @Override
     public void draw(SpriteBatch spriteBatch) {

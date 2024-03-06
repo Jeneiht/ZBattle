@@ -18,7 +18,7 @@ public class ForestMap extends GameMap {
 
     @Override
     protected void setCoverTilesPath() {
-        coverTilesPath = "assets/map/lmaoCoverTiles.xml";
+        coverTilesPath = "map/lmaoCoverTiles.xml";
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ForestMap extends GameMap {
 
     @Override
     protected void setGameMapPath() {
-        gameMapPath = "assets/map/lmao.xml";
+        gameMapPath = "map/lmao.xml";
     }
 
 

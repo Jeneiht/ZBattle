@@ -210,7 +210,7 @@ public abstract class GameMap {
         drawTiles(spriteBatch);
         drawEntities(spriteBatch);
         drawCoverTiles(spriteBatch);
-        //drawHealthBars(spriteBatch);
+        drawHealthBars(spriteBatch);
 
 
     }

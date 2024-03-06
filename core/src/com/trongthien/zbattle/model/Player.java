@@ -1,22 +1,17 @@
 package com.trongthien.zbattle.model;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.trongthien.zbattle.controller.movement.Direction;
-import com.trongthien.zbattle.model.constant.PlayerState;
-import com.trongthien.zbattle.view.map.Camera;
-import com.trongthien.zbattle.view.map.Tile;
-import com.trongthien.zbattle.view.map.TileSet;
-import com.trongthien.zbattle.controller.movement.impl.PlayerMovement;
-import com.trongthien.zbattle.view.entity.HealthBar;
-import com.trongthien.zbattle.view.entity.Animation;
 import com.trongthien.zbattle.common.SharedContext;
 import com.trongthien.zbattle.common.constant.GameConstant;
 import com.trongthien.zbattle.common.io.KeyHandler;
+import com.trongthien.zbattle.controller.movement.Direction;
+import com.trongthien.zbattle.controller.movement.impl.PlayerMovement;
+import com.trongthien.zbattle.model.constant.PlayerState;
+import com.trongthien.zbattle.view.entity.Animation;
+import com.trongthien.zbattle.view.entity.HealthBar;
+import com.trongthien.zbattle.view.map.Tile;
+import com.trongthien.zbattle.view.map.TileSet;
 import lombok.Getter;
 import lombok.Setter;
 
