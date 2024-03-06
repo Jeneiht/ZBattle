@@ -4,3 +4,7 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 eclipse.project.name = appName + "-core"
+
+task wrapper(type: Wrapper){
+    gradleVersion = '7.2'
+}

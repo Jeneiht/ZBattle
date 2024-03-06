@@ -210,10 +210,9 @@ public abstract class GameMap {
         drawTiles(spriteBatch);
         drawEntities(spriteBatch);
         drawCoverTiles(spriteBatch);
-        drawHealthBars(spriteBatch);
-        drawNothing(spriteBatch);
-    }
-    private void drawNothing(SpriteBatch spriteBatch) {
+        //drawHealthBars(spriteBatch);
+
+
     }
     private void drawHealthBars(SpriteBatch spriteBatch) {
         for (Entity entity : entities) {

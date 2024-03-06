@@ -36,7 +36,7 @@ public class MainGame extends ApplicationAdapter {
     private void playBackgroundMusic() {
         Music music = Gdx.audio.newMusic(Gdx.files.internal(GameConstant.backgroundMusicPath));
         music.setLooping(true);
-        music.setVolume(0.2f);
+        music.setVolume(0.1f);
         music.play();
     }
 
@@ -60,17 +60,19 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        SharedContext.getInstance().getCamera().setToOrtho(false, GameConstant.scale * width, GameConstant.scale * height);
+        SharedContext.getInstance().getCamera().setToOrtho(false, GameConstant.scale * GameConstant.screenWidth, GameConstant.scale * GameConstant.screenHeight);
         SharedContext.getInstance().getCamera().update();
     }
 
     @Override
     public void render() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         batch.setProjectionMatrix(SharedContext.getInstance().getCamera().combined);
         batch.begin();
         update();
         SharedContext.getInstance().getCurrentGameMap().draw(batch);
-        frameRate.render();
+        //frameRate.render();
+
         batch.end();
     }
 

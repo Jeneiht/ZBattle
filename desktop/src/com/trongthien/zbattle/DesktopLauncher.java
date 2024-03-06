@@ -12,7 +12,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(0);
 		config.setIdleFPS(0);
-		config.setTransparentFramebuffer(true);
 		
 		config.setTitle("ZBattle");
 		config.useVsync(true);

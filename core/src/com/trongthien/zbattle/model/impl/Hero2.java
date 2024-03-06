@@ -76,10 +76,10 @@ public class Hero2 extends Player {
         mapTileY.put(Map.of(PlayerState.RUN, Direction.UP), 2);
         mapTileY.put(Map.of(PlayerState.RUN, Direction.RIGHT), 2);
         mapTileY.put(Map.of(PlayerState.RUN, Direction.LEFT), 3);
-        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.DOWN), 4);
-        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.UP), 4);
-        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.RIGHT), 4);
-        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.LEFT), 5);
+        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.DOWN), 8);
+        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.UP), 8);
+        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.RIGHT), 8);
+        mapTileY.put(Map.of(PlayerState.ATTACKA, Direction.LEFT), 9);
 
         //init maxFrame
         maxFrame.put(PlayerState.IDLE, 13);

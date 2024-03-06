@@ -31,7 +31,7 @@ public abstract class Attack {
         try {
             Music music = Gdx.audio.newMusic(Gdx.files.internal(soundPath));
             music.setLooping(false);
-            music.setVolume(0.2f);
+            music.setVolume(0.3f);
             music.play();
         }catch (Exception e){
             return;
@@ -47,8 +47,6 @@ public abstract class Attack {
         long currentTime = System.currentTimeMillis();
         timeToLive -= currentTime-startTime;
         startTime = currentTime;
-        System.out.println("hitbox: "+getHitBox().getX()+" "+getHitBox().getY()+" "+getHitBox().getWidth()+" "+getHitBox().getHeight());
-
     }
     public abstract void setSoundPath();
     public abstract HitBox getHitBox();
