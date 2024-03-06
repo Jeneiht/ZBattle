@@ -1,6 +1,7 @@
 package com.trongthien.zbattle.common.io;
 
 
+import com.badlogic.gdx.Gdx;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -30,13 +31,15 @@ public class XMLReader {
         try {
             dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(gameMapPath);
+            System.out.println(Gdx.files.internal(gameMapPath).file());
+            Document doc = db.parse(Gdx.files.internal(gameMapPath).file());
             doc.getDocumentElement().normalize();
             NodeList nodeList = doc.getElementsByTagName("data");
             for (int i = 0; i < nodeList.getLength(); i++) {
                 layers.add(nodeList.item(i).getTextContent());
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
+            System.out.println("Error while reading map, map path = " + Gdx.files.internal(gameMapPath).file());
             throw new RuntimeException(e);
         }
         return layers;
