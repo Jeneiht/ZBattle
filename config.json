@@ -1,0 +1,20 @@
+{
+    "platform": "windows64",
+    "jdk": "jdk.tar.gz",
+    "executable": "zbattle",
+    "classpath": [
+        "./desktop/build/libs/desktop-1.0.jar"
+    ],
+    "removelibs": [
+        
+    ],
+    "mainclass": "com.trongthien.zbattle.DesktopLauncher",
+    "vmargs": [
+       "Xmx1G XstartOnFirstThread"
+    ],
+    "resources": [
+        "assets/"
+    ],
+    "minimizejre": "soft",
+    "output": "out-win"
+}
