@@ -36,6 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
-/.idea/
-/.gradle/
-/desktop/out/
+/desktop/out/\
+
+##Ignore idea and gradle
+.idea/
+.gradle/s

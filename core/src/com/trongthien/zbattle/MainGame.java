@@ -42,6 +42,9 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public void render() {
+        System.out.println("current state " + GameStateManager.getInstance().getCurrentGameState());
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         GameStateManager.getInstance().getCurrentGameState().update();
         GameStateManager.getInstance().getCurrentGameState().draw();
     }
