@@ -70,6 +70,10 @@ public abstract class Player extends Entity {
 
     @Override
     public void update() {
+        if(health <= 0){
+            dead = true;
+            return;
+        }
         PlayerState previousState = playerState;
         updateSpeed();
         currentMovement.move(this);

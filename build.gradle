@@ -52,7 +52,10 @@ project(":desktop") {
 
         testCompileOnly 'org.projectlombok:lombok:1.18.30'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
-        
+
+    }
+    dependencies {
+        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     }
 }
 
@@ -67,6 +70,9 @@ project(":core") {
 
         testCompileOnly 'org.projectlombok:lombok:1.18.30'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
-        
+
+    }
+    dependencies {
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     }
 }

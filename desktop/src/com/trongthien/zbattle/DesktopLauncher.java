@@ -14,7 +14,7 @@ public class DesktopLauncher {
 		config.setIdleFPS(60);
 		
 		config.setTitle("ZBattle");
-		config.useVsync(true);
+		//config.useVsync(true);
 		config.setWindowedMode(GameConstant.screenWidth, GameConstant.screenHeight);
 
 		config.setWindowPosition(GameConstant.screenX, GameConstant.screenY);
